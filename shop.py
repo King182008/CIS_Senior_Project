@@ -1,85 +1,89 @@
 import travel
 
+
 class ShopItem():
-    def __init__(self):
-        self.name = ""
-        self.price = 0
-        self.quantity = 0
 
-healthPotion = ShopItem()
-healthPotion.name = "Health Potion"
-healthPotion.price = 25
-healthPotion.quantity = 2
+    def __init__(self, name, price, quantity):
 
-greaterHealthPotion = ShopItem()
-greaterHealthPotion.name = "Greater Health Potion"
-greaterHealthPotion.price = 50
-greaterHealthPotion.quantity = 1
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
-manaPotion = ShopItem()
-manaPotion.name = "Mana Potion"
-manaPotion.price = 25
-manaPotion.quantity = 2
 
-greaterManaPotion = ShopItem()
-greaterManaPotion.name = "Greater Mana Potion"
-greaterManaPotion.price = 50
-greaterManaPotion.quantity = 1
+# ---------- ITEMS ----------
 
-sword = ShopItem()
-sword.name = "Sword"
-sword.price = 25
-sword.quantity = 2
+healthPotion = ShopItem("Health Potion", 25, 2)
+greaterHealthPotion = ShopItem("Greater Health Potion", 50, 1)
 
-greatSword = ShopItem()
-greatSword.name = "Great Sword"
-greatSword.price = 50
-greatSword.quantity = 1
+manaPotion = ShopItem("Mana Potion", 25, 2)
+greaterManaPotion = ShopItem("Greater Mana Potion", 50, 1)
 
-staff = ShopItem()
-staff.name = "Staff"
-staff.price = 30
-staff.quantity = 1
+sword = ShopItem("Sword", 25, 2)
+greatSword = ShopItem("Great Sword", 50, 1)
 
-fireStaff = ShopItem()
-fireStaff.name = "Fire Staff"
-fireStaff.price = 40
-fireStaff.quantity = 1
+staff = ShopItem("Staff", 30, 1)
+fireStaff = ShopItem("Fire Staff", 40, 1)
+waterStaff = ShopItem("Water Staff", 40, 1)
+poisonStaff = ShopItem("Poison Staff", 40, 1)
 
-waterStaff = ShopItem()
-waterStaff.name = "Water Staff"
-waterStaff.price = 40
-waterStaff.quantity = 1
 
-poisonStaff = ShopItem()
-poisonStaff.name = "Poison Staff"
-poisonStaff.price = 40
-poisonStaff.quantity = 1
+# ---------- SHOPS ----------
 
-shops = {"forest": [healthPotion, manaPotion, sword, staff], 
-         "desert": [healthPotion, manaPotion, fireStaff],
-         "mountains": [healthPotion, manaPotion, waterStaff, greatSword],
-         "swamps": [greaterHealthPotion, greaterManaPotion, poisonStaff],
-         "volcano": [greaterHealthPotion, greaterManaPotion]
-    }
+shops = {
+    "forest": [healthPotion, manaPotion, sword, staff],
+    "desert": [healthPotion, manaPotion, fireStaff],
+    "mountains": [healthPotion, manaPotion, waterStaff, greatSword],
+    "swamp": [greaterHealthPotion, greaterManaPotion, poisonStaff],
+    "volcano": [greaterHealthPotion, greaterManaPotion]
+}
 
-def display_shop(place):
-    print(f"Welcome to the {place} Shop! What would you like to buy?")
-    print("=" * 30)
-    print(f"{"Name":<15} {"Price":<10} {"Quantity":<10}")
+
+# ---------- SHOP DISPLAY ----------
+
+def display_shop(place, player):
+
+    print(f"\nWelcome to the {place.capitalize()} Shop!")
+    print("=" * 40)
+
+    print(f"{'Name':<25}{'Price':<10}{'Quantity':<10}")
+
     for item in shops[place]:
-        print(f"{item.name:<15} {item.price:<10} {item.quantity:<10}")
-
-
-if __name__ == "__main__":
-    # initialize state from travel module
-    currentPlace = travel.currentPlace
+        print(f"{item.name:<25}{item.price:<10}{item.quantity:<10}")
 
     while True:
-        action = input("What would you like to do? (Shop, Travel or Stop) ")
-        if action.lower() == "shop":
-            display_shop(currentPlace)
-        elif action.lower() == "travel":
-            currentPlace = travel.travel(currentPlace)
-        elif action.lower() == "stop":
-            break
+
+        choice = input(
+            "\nEnter item name to buy (or 'exit'): "
+        ).strip().lower()
+
+        if choice == "exit":
+            return
+
+        # SEARCH SHOP ITEMS
+        for item in shops[place]:
+
+            if choice == item.name.lower():
+
+                if item.quantity <= 0:
+                    print("Out of stock.")
+                    break
+
+                if player.gold < item.price:
+                    print("Not enough gold.")
+                    break
+
+                # BUY ITEM
+                player.gold -= item.price
+                item.quantity -= 1
+
+                # ADD TO INVENTORY ⭐⭐⭐⭐⭐
+                player.inventory.append(item.name)
+
+                print(f"You bought {item.name}!")
+
+                print("Inventory:", player.inventory)
+
+                break
+
+        else:
+            print("Item not found.")

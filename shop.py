@@ -51,6 +51,7 @@ def display_shop(place, player):
         print(f"{item.name:<25}{item.price:<10}{item.quantity:<10}")
 
     while True:
+        print("\n You have ", player.gold, " gold.")
 
         choice = input(
             "\nEnter item name to buy (or 'exit'): "

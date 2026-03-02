@@ -1,0 +1,13 @@
+{
+    "name": "Hungry",
+    "level": 1,
+    "health": 100,
+    "mana": 50,
+    "strength": 1,
+    "intelligence": 1,
+    "agility": 1,
+    "gold": 60,
+    "inventory": [
+        "Water Staff"
+    ]
+}

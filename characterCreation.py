@@ -12,6 +12,7 @@ class Character:
         self.intelligence = 1
         self.agility = 1
         self.gold = 100
+        self.weapon = "fists"
         self.inventory = []
 
     # Convert object -> dictionary (needed for JSON)
@@ -47,6 +48,18 @@ class Character:
         except FileNotFoundError:
             print("No save file in that slot.")
             return None
+
+def dict(character):
+        return character.__dict__
+
+def save(slot):
+
+        filename = f"save{slot}.json"
+
+        with open(filename, "w") as file:
+            json.dump(dict(hero), file, indent=4)
+
+        print(f"Game saved in slot {slot}!")
         
 def choose_slot():
 
@@ -89,7 +102,7 @@ def create_character():
 
 
 while True:
-    choice = input("New Game, Load Game or Show Slots? ").lower()
+    choice = input("New Game, Load Game or Show Slots? (New, Load, or Show) ").lower()
 
     if choice == "new":
         hero = create_character()

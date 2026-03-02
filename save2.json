@@ -1,0 +1,15 @@
+{
+    "name": "Gug",
+    "level": 1,
+    "health": 100,
+    "mana": 50,
+    "strength": 1,
+    "intelligence": 1,
+    "agility": 1,
+    "gold": 20,
+    "inventory": [
+        "Sword",
+        "Staff",
+        "Health Potion"
+    ]
+}

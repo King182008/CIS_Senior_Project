@@ -1,8 +1,8 @@
 import json
 import os
+from shop import ShopItem, ShopWeapon
 
 class Character:
-
     def __init__(self, name):
         self.name = name
         self.level = 1
@@ -12,122 +12,108 @@ class Character:
         self.intelligence = 1
         self.agility = 1
         self.gold = 100
-        self.weapon = "fists"
+        self.weapon = None  # Equipped weapon
         self.inventory = []
 
-    # Convert object -> dictionary (needed for JSON)
     def to_dict(self):
-        return self.__dict__
+        return {
+            "name": self.name,
+            "level": self.level,
+            "health": self.health,
+            "mana": self.mana,
+            "strength": self.strength,
+            "intelligence": self.intelligence,
+            "agility": self.agility,
+            "gold": self.gold,
+            "weapon": self.weapon.to_dict() if self.weapon else None,
+            "inventory": [item.to_dict() for item in self.inventory]
+        }
 
     def save_character(self, slot):
-
         filename = f"save{slot}.json"
-
         with open(filename, "w") as file:
             json.dump(self.to_dict(), file, indent=4)
-
         print(f"Game saved in slot {slot}!")
-
 
     @classmethod
     def load_character(cls, slot):
-
         filename = f"save{slot}.json"
-
-        try:
-            with open(filename, "r") as file:
-                data = json.load(file)
-
-            character = cls(data["name"])
-            character.__dict__.update(data)
-
-            print(f"Loaded save slot {slot}")
-
-            return character
-
-        except FileNotFoundError:
+        if not os.path.exists(filename):
             print("No save file in that slot.")
             return None
+        with open(filename, "r") as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError:
+                print("Save file is corrupted.")
+                return None
 
-def dict(character):
-        return character.__dict__
+        char = cls(data["name"])
+        char.level = data.get("level", 1)
+        char.health = data.get("health", 100)
+        char.mana = data.get("mana", 50)
+        char.strength = data.get("strength", 1)
+        char.intelligence = data.get("intelligence", 1)
+        char.agility = data.get("agility", 1)
+        char.gold = data.get("gold", 100)
 
-def save(slot):
+        weapon_data = data.get("weapon")
+        if weapon_data and weapon_data.get("type") == "weapon":
+            char.weapon = ShopWeapon(
+                weapon_data["name"],
+                weapon_data["price"],
+                weapon_data["quantity"],
+                weapon_data["damage"]
+            )
 
-        filename = f"save{slot}.json"
+        char.inventory = []
+        for item_data in data.get("inventory", []):
+            if item_data["type"] == "weapon":
+                item = ShopWeapon(
+                    item_data["name"],
+                    item_data["price"],
+                    item_data["quantity"],
+                    item_data["damage"]
+                )
+            else:
+                item = ShopItem(
+                    item_data["name"],
+                    item_data["price"],
+                    item_data["quantity"]
+                )
+            char.inventory.append(item)
 
-        with open(filename, "w") as file:
-            json.dump(dict(hero), file, indent=4)
+        print(f"Loaded character {char.name} from slot {slot}")
+        return char
 
-        print(f"Game saved in slot {slot}!")
-        
+
+# -------------------- UTILITY --------------------
+
 def choose_slot():
-
     slot = input("Choose save slot (1-3): ")
-
-    while slot not in ["1","2","3"]:
+    while slot not in ["1", "2", "3"]:
         slot = input("Invalid slot. Choose 1-3: ")
-
     return slot
 
+
 def show_slots():
-
-    for i in range(1,4):
-
+    for i in range(1, 4):
         filename = f"save{i}.json"
-
         if os.path.exists(filename):
-
-            with open(filename, "r") as file:
-                data = json.load(file)
-
-            print(f"Slot {i}: USED ({data['name']})")
-
+            try:
+                with open(filename, "r") as file:
+                    data = json.load(file)
+                print(f"Slot {i}: USED ({data.get('name', 'Unknown')})")
+            except json.JSONDecodeError:
+                print(f"Slot {i}: CORRUPTED SAVE")
         else:
             print(f"Slot {i}: EMPTY")
-        
+
+
 def create_character():
-
     name = input("Enter your character's name: ").strip()
-
-    # Optional safety check
     while name == "":
         name = input("Name cannot be empty. Enter a name: ").strip()
-
-    character = Character(name)
-
-    print(f"Welcome, {character.name}!")
-
-    return character
-
-
-while True:
-    choice = input("New Game, Load Game or Show Slots? (New, Load, or Show) ").lower()
-
-    if choice == "new":
-        hero = create_character()
-
-        show_slots()
-
-        slot = choose_slot()
-
-        hero.save_character(slot)
-
-        break
-
-    elif choice == "load":
-        show_slots()
-        slot = choose_slot()
-        hero = Character.load_character(slot)
-        print(hero.__dict__)
-
-        if hero is not None:
-            break
-
-    elif choice == "show":
-        show_slots()
-
-    else:
-        print("Invalid choice. Please choose New Game, Load Game or Show Slots.")
-
-
+    char = Character(name)
+    print(f"Welcome, {char.name}!")
+    return char

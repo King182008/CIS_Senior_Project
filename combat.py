@@ -1,3 +1,5 @@
+import characterCreation
+
 class Enemy():
     def __init__(self, name, health, attack):
         self.name = name
@@ -33,8 +35,14 @@ def display_enemy(enemy):
     while enemy.health > 0:
         action = input("Do you want to (Attack or Run)? ").strip().lower()
         if action == "attack":
-            damage = 2  # Placeholder for player's attack damage
+            damage = characterCreation.hero.weapon.damage  # Use player's attack power
             enemy.take_damage(damage)
+            if enemy.health > 0:
+                characterCreation.hero.health -= enemy.attack
+                print(f"You take {enemy.attack} damage. Your health is now {characterCreation.hero.health}.")
+            if characterCreation.hero.health <= 0:
+                print("You have been defeated! Game Over.")
+                break
         elif action == "run":
             print("You run away safely!")
             break

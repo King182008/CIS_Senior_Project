@@ -1,17 +1,18 @@
 import characterCreation
 import shop
+import combat
 
-def show_inventory():
-    hero = characterCreation.hero
+def show_inventory(hero):
 
     if not hero.inventory:
-        print("Your inventory is empty.")
+        print("\nYour inventory is empty.")
+        print(f"Gold: {hero.gold}")
         return
 
     print("\nYour Inventory:")
     for i, item in enumerate(hero.inventory, start=1):
         if isinstance(item, shop.ShopWeapon):
-            print(f"{i}. {item.name} (Weapon, Damage: {item.damage})")
+            print(f"{i}. {item} (Weapon, Damage: {item.damage})")
         else:
             print(f"{i}. {item.name} (Item)")
 

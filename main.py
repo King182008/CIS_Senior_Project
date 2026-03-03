@@ -21,11 +21,12 @@ if __name__ == "__main__":
 
         elif choice == "load":
             characterCreation.show_slots()
-            slot = characterCreation.choose_slot()
+            slot = characterCreation.choose_slot()        # ONLY CALLED ONCE
             hero = characterCreation.Character.load_character(slot)
-            if hero is not None:
+
+            if hero:
+                current_slot = slot
                 print(f"Character loaded: {hero.name}")
-                characterCreation.hero = hero
                 break
             else:
                 print("Failed to load. Try again or start a new game.")
@@ -43,29 +44,32 @@ if __name__ == "__main__":
         action = input("What would you like to do? (Shop, Travel, Save, Combat, Inventory, Stop) ").strip().lower()
 
         # Ensure hero exists
-        if characterCreation.hero is None:
+        if hero is None:
             print("No character loaded. Exiting.")
             break
 
         if action == "shop":
-            shop.display_shop(currentPlace, characterCreation.hero)
+            shop.display_shop(currentPlace, hero)
 
         elif action == "travel":
             currentPlace = travel.travel(currentPlace)
 
         elif action == "save":
             slot = characterCreation.choose_slot()
-            characterCreation.hero.save_character(slot)
+            hero.save_character(slot)
 
         elif action == "combat":
             if currentPlace in combat.Enemies and combat.Enemies[currentPlace]:
-                enemy = combat.Enemies[currentPlace][0]  # Get the first enemy for the current location
-                combat.display_enemy(enemy)
-            else:
-                print("No enemies here.")
+                enemy_type = combat.Enemies[currentPlace][0]   # This is the string, e.g., "Rat"
+                enemy = combat.create_enemy(enemy_type)        # Create a fresh Enemy object
+                result = combat.display_enemy(enemy, hero)
+
+            if result == "dead":
+                characterCreation.delete_save(slot)
+                break
 
         elif action == "inventory":
-            inventory.show_inventory()
+            inventory.show_inventory(hero)
 
         elif action == "stop":
             print("Exiting game.")

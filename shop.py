@@ -43,21 +43,22 @@ greaterHealthPotion = ShopItem("Greater Health Potion", 50, 1)
 manaPotion = ShopItem("Mana Potion", 25, 2)
 greaterManaPotion = ShopItem("Greater Mana Potion", 50, 1)
 
-sword = ShopWeapon("Sword", 25, 1, 5)
-greatSword = ShopWeapon("Great Sword", 50, 1, 10)
-
-staff = ShopWeapon("Staff", 30, 1, 3)
-fireStaff = ShopWeapon("Fire Staff", 40, 1, 5)
-waterStaff = ShopWeapon("Water Staff", 40, 1, 5)
-poisonStaff = ShopWeapon("Poison Staff", 40, 1, 7)
+weapons = {
+    "sword": ShopWeapon("Sword", 25, 1, 5),
+    "great sword": ShopWeapon("Great Sword", 50, 1, 10),
+    "staff": ShopWeapon("Staff", 30, 1, 3),
+    "fire staff": ShopWeapon("Fire Staff", 40, 1, 5),
+    "water staff": ShopWeapon("Water Staff", 40, 1, 5),
+    "poison staff": ShopWeapon("Poison Staff", 40, 1, 7)
+}
 
 # -------------------- SHOPS --------------------
 
 shops = {
-    "forest": [healthPotion, manaPotion, sword, staff],
-    "desert": [healthPotion, manaPotion, fireStaff],
-    "mountains": [healthPotion, manaPotion, waterStaff, greatSword],
-    "swamp": [greaterHealthPotion, greaterManaPotion, poisonStaff],
+    "forest": [healthPotion, manaPotion, weapons["sword"], weapons["staff"]],
+    "desert": [healthPotion, manaPotion, weapons["fire staff"]],
+    "mountains": [healthPotion, manaPotion, weapons["water staff"], weapons["great sword"]],
+    "swamp": [greaterHealthPotion, greaterManaPotion, weapons["poison staff"]],
     "volcano": [greaterHealthPotion, greaterManaPotion]
 }
 

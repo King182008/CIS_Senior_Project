@@ -1,26 +1,26 @@
 {
     "name": "King",
     "level": 1,
-    "health": 70,
+    "health": 100,
     "mana": 50,
     "strength": 1,
     "intelligence": 1,
     "agility": 1,
-    "gold": 20,
+    "gold": 50,
     "weapon": {
         "type": "weapon",
-        "name": "Staff",
-        "price": 30,
+        "name": "Great Sword",
+        "price": 50,
         "quantity": 1,
-        "damage": 3
+        "damage": 10
     },
     "inventory": [
         {
             "type": "weapon",
-            "name": "Staff",
-            "price": 30,
+            "name": "Great Sword",
+            "price": 50,
             "quantity": 1,
-            "damage": 3
+            "damage": 10
         }
     ]
 }

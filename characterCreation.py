@@ -1,6 +1,7 @@
 import json
 import os
-from shop import ShopItem, ShopWeapon
+from shop import ShopItem, ShopWeapon, weapons
+
 
 class Character:
     def __init__(self, name):
@@ -38,15 +39,35 @@ class Character:
     @classmethod
     def load_character(cls, slot):
         filename = f"save{slot}.json"
+
         if not os.path.exists(filename):
             print("No save file in that slot.")
             return None
+
         with open(filename, "r") as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
                 print("Save file is corrupted.")
                 return None
+
+        hero = cls(data["name"])
+        hero.health = data["health"]
+        hero.gold = data["gold"]
+
+        weapon_data = data.get("weapon")
+
+        if weapon_data:
+            weapon_name = weapon_data["name"]
+            hero.weapon = weapons[weapon_name.lower()]
+        else:
+            hero.weapon = None
+
+        print(f"Loaded character {hero.name} from slot {slot}")
+        return hero
+
+        if hero:
+            current_slot = slot
 
         char = cls(data["name"])
         char.level = data.get("level", 1)
@@ -117,3 +138,12 @@ def create_character():
     char = Character(name)
     print(f"Welcome, {char.name}!")
     return char
+
+def delete_save(slot):
+    filename = f"save{slot}.json"
+
+    if os.path.exists(filename):
+        os.remove(filename)
+        print(f"Save slot {slot} deleted.")
+    else:
+        print("No save file to delete.")

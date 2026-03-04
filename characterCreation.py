@@ -12,9 +12,11 @@ class Character:
         self.strength = 1
         self.intelligence = 1
         self.agility = 1
+        self.xp = 0
+        self.xp_to_next_level = 50 * (self.level ** 2)
         self.gold = 100
         self.weapon = None  # Equipped weapon
-        self.inventory = []
+        self.inventory = {}
 
     def to_dict(self):
         return {
@@ -27,7 +29,7 @@ class Character:
             "agility": self.agility,
             "gold": self.gold,
             "weapon": self.weapon.to_dict() if self.weapon else None,
-            "inventory": [item.to_dict() for item in self.inventory]
+            "inventory": {item.to_dict()["name"]: item.to_dict() for item in self.inventory}
         }
 
     def save_character(self, slot):

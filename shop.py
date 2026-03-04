@@ -1,4 +1,5 @@
 import copy
+from inventory import add_item
 
 class ShopItem:
     def __init__(self, name, price, quantity):
@@ -31,6 +32,9 @@ class ShopWeapon(ShopItem):
             "quantity": self.quantity,
             "damage": self.damage
         }
+    
+    def __str__(self):
+        return f"{self.name}"
 
     def copy(self):
         return ShopWeapon(self.name, self.price, 1, self.damage)
@@ -87,12 +91,14 @@ def display_shop(place, player):
                     break
 
                 purchased_item = item.copy()
-                player.inventory.append(purchased_item)
+                add_item(purchased_item, player)
                 player.gold -= item.price
                 item.quantity -= 1
 
                 print(f"You bought {item.name}!")
-                print("Inventory:", [i.name for i in player.inventory])
+                print("Inventory:")
+                for item_name, data in player.inventory.items():
+                    print(f"{item_name} x{data['quantity']}")
                 break
         else:
             print("Item not found.")

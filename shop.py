@@ -48,6 +48,7 @@ manaPotion = ShopItem("Mana Potion", 25, 2)
 greaterManaPotion = ShopItem("Greater Mana Potion", 50, 1)
 
 weapons = {
+    "fists": ShopWeapon("Fists", 0, 1, 5),
     "sword": ShopWeapon("Sword", 25, 1, 5),
     "great sword": ShopWeapon("Great Sword", 50, 1, 10),
     "staff": ShopWeapon("Staff", 30, 1, 3),

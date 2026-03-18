@@ -9,13 +9,14 @@ class Character:
         self.level = 1
         self.health = 100
         self.mana = 50
+        self.spellList = set()
         self.strength = 1
         self.intelligence = 1
         self.agility = 1
         self.xp = 0
         self.xp_to_next_level = 50 * (self.level ** 2)
         self.gold = 100
-        self.weapon = None  # Equipped weapon
+        self.weapon = weapons["fists"]  # Equipped weapon
         self.inventory = {}
 
     def to_dict(self):
@@ -27,9 +28,20 @@ class Character:
             "strength": self.strength,
             "intelligence": self.intelligence,
             "agility": self.agility,
+            "xp": self.xp,
+            "xp_to_next_level": self.xp_to_next_level,
             "gold": self.gold,
-            "weapon": self.weapon.to_dict() if self.weapon else None,
-            "inventory": {item.to_dict()["name"]: item.to_dict() for item in self.inventory}
+            "weapon": self.weapon.to_dict() if hasattr(self.weapon, "to_dict") else None,
+            "inventory": {
+                item_name: {
+                    "quantity": data["quantity"],
+                    "item": data["item"].to_dict() if hasattr(data["item"], "to_dict") else {
+                        "type": "item",
+                        "name": data["item"].name
+                    }
+                }
+                for item_name, data in self.inventory.items()
+            }
         }
 
     def save_character(self, slot):
@@ -54,60 +66,67 @@ class Character:
                 return None
 
         hero = cls(data["name"])
-        hero.health = data["health"]
-        hero.gold = data["gold"]
 
+        # ---------- Basic Stats ----------
+        hero.level = data.get("level", 1)
+        hero.health = data.get("health", 100)
+        hero.mana = data.get("mana", 50)
+        hero.strength = data.get("strength", 1)
+        hero.intelligence = data.get("intelligence", 1)
+        hero.agility = data.get("agility", 1)
+        hero.gold = data.get("gold", 100)
+        hero.xp = data.get("xp", 0)
+        hero.xp_to_next_level = data.get("xp_to_next_level", 50 * (hero.level ** 2))
+
+        # ---------- Load Equipped Weapon ----------
         weapon_data = data.get("weapon")
-
-        if weapon_data:
-            weapon_name = weapon_data["name"]
-            hero.weapon = weapons[weapon_name.lower()]
+        if weapon_data and weapon_data.get("type") == "weapon":
+            hero.weapon = ShopWeapon(
+                weapon_data["name"],
+                weapon_data["price"],
+                1,
+                weapon_data["damage"]
+            )
         else:
             hero.weapon = None
 
+        # ---------- Load Inventory ----------
+        hero.inventory = {}
+
+        for item_name, item_data in data.get("inventory", {}).items():
+
+            saved_item = item_data["item"]
+            quantity = item_data["quantity"]
+
+            # Weapon
+            if saved_item.get("type") == "weapon":
+                item_obj = ShopWeapon(
+                    saved_item["name"],
+                    saved_item.get("price", 0),
+                    1,
+                    saved_item["damage"]
+                )
+
+            # ShopItem
+            elif saved_item.get("type") == "item" and "price" in saved_item:
+                item_obj = ShopItem(
+                    saved_item["name"],
+                    saved_item["price"],
+                    1
+                )
+
+            # Combat drop (like Rat Tail)
+            else:
+                from combat import Item
+                item_obj = Item(saved_item["name"])
+
+            hero.inventory[item_name] = {
+                "item": item_obj,
+                "quantity": quantity
+            }
+
         print(f"Loaded character {hero.name} from slot {slot}")
         return hero
-
-        if hero:
-            current_slot = slot
-
-        char = cls(data["name"])
-        char.level = data.get("level", 1)
-        char.health = data.get("health", 100)
-        char.mana = data.get("mana", 50)
-        char.strength = data.get("strength", 1)
-        char.intelligence = data.get("intelligence", 1)
-        char.agility = data.get("agility", 1)
-        char.gold = data.get("gold", 100)
-
-        weapon_data = data.get("weapon")
-        if weapon_data and weapon_data.get("type") == "weapon":
-            char.weapon = ShopWeapon(
-                weapon_data["name"],
-                weapon_data["price"],
-                weapon_data["quantity"],
-                weapon_data["damage"]
-            )
-
-        char.inventory = []
-        for item_data in data.get("inventory", []):
-            if item_data["type"] == "weapon":
-                item = ShopWeapon(
-                    item_data["name"],
-                    item_data["price"],
-                    item_data["quantity"],
-                    item_data["damage"]
-                )
-            else:
-                item = ShopItem(
-                    item_data["name"],
-                    item_data["price"],
-                    item_data["quantity"]
-                )
-            char.inventory.append(item)
-
-        print(f"Loaded character {char.name} from slot {slot}")
-        return char
 
 
 # -------------------- UTILITY --------------------

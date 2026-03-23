@@ -54,7 +54,9 @@ weapons = {
     "staff": ShopWeapon("Staff", 30, 1, 3),
     "fire staff": ShopWeapon("Fire Staff", 40, 1, 5),
     "water staff": ShopWeapon("Water Staff", 40, 1, 5),
-    "poison staff": ShopWeapon("Poison Staff", 40, 1, 7)
+    "poison staff": ShopWeapon("Poison Staff", 40, 1, 7),
+    "Excalibur": ShopWeapon("Excalibur", 100, 1, 20),
+    "Caduceus Staff": ShopWeapon("Caduceus Staff", 100, 1, 15)
 }
 
 # -------------------- SHOPS --------------------
@@ -64,7 +66,8 @@ shops = {
     "desert": [healthPotion, manaPotion, weapons["fire staff"]],
     "mountains": [healthPotion, manaPotion, weapons["water staff"], weapons["great sword"]],
     "swamp": [greaterHealthPotion, greaterManaPotion, weapons["poison staff"]],
-    "volcano": [greaterHealthPotion, greaterManaPotion]
+    "volcano": [greaterHealthPotion, greaterManaPotion],
+    "void": [weapons["Excalibur"], weapons["Caduceus Staff"]]
 }
 
 

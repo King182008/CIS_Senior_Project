@@ -48,19 +48,19 @@ if __name__ == "__main__":
             print("No character loaded. Exiting.")
             break
 
-        if action == "shop":
+        if action == "shop" or action == "1":
             shop.display_shop(currentPlace, hero)
 
-        elif action == "travel":
-            currentPlace = travel.travel(currentPlace)
+        elif action == "travel" or action == "2":
+            currentPlace = travel.travel(currentPlace, hero)
 
-        elif action == "save":
+        elif action == "save" or action == "3":
             slot = characterCreation.choose_slot()
             hero.save_character(slot)
 
-        elif action == "combat":
+        elif action == "combat" or action == "4":
             if currentPlace in combat.Enemies and combat.Enemies[currentPlace]:
-                enemy_type = combat.Enemies[currentPlace][0]   # This is the string, e.g., "Rat"
+                enemy_type = combat.Enemies[currentPlace][0] 
                 enemy = combat.create_enemy(enemy_type)        # Create a fresh Enemy object
                 result = combat.display_enemy(enemy, hero)
 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                 characterCreation.delete_save(slot)
                 break
 
-        elif action == "inventory":
+        elif action == "inventory" or action == "5":
             inventory.show_inventory(hero)
 
         elif action == "stop":

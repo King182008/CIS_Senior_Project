@@ -31,21 +31,24 @@ def create_enemy(enemy_type):
         return Enemy("Locust Swarm", 30, 7, 15, 30, Item("Locust Wing"))
     elif enemy_type == "Dragon":
         return Enemy("Dragon", 100, 20, 50, 200, Item("Dragon Scale"))
+    elif enemy_type == "Cuthulu":
+        return Enemy("Cuthulu", 200, 30, 100, 500, Item("Cuthulu's Eye"))
 
-# Dictionary mapping regions to enemy types (strings)
+# Dictionary mapping regions to enemy types
 Enemies = {
     "forest": ["Rat"],
     "desert": ["Goblin"],
     "mountains": ["Troll"],
     "swamp": ["Locust Swarm"],
-    "volcano": ["Dragon"]
+    "volcano": ["Dragon"],
+    "void": ["Cuthulu"]
 }
 
 spells = {
-    "heal": {"name": "Heal", "damage": 0, "heal": 20},
-    "fireball": {"name": "FireBall", "damage": 30},
-    "crash": {"name": "Crash", "damage": 25},
-    "poison cloud": {"name": "Poison Cloud", "damage": 15}
+    "heal": {"name": "Heal", "damage": 0, "heal": 20, "Mana": 20},
+    "fireball": {"name": "FireBall", "damage": 30, "Mana": 50},
+    "crash": {"name": "Crash", "damage": 25, "Mana": 35},
+    "poison cloud": {"name": "Poison Cloud", "damage": 15, "Mana": 15}
 }
 
 def display_enemy(enemy, hero):
@@ -63,6 +66,9 @@ def display_enemy(enemy, hero):
 
             print(f"\nYou attack the {enemy.name} for {damage} damage!")
             enemy.take_damage(damage)
+
+            print(f"You regained 5 mana. You know have {hero.mana} mana.")
+            hero.mana += 5
 
             
             if enemy.health > 0:
@@ -94,18 +100,21 @@ def display_enemy(enemy, hero):
             if spell_choice in hero.spellList:
                 spell = spells[spell_choice]
 
+                if hero.mana - spell["Mana"] < 0:
+                    print("Not enough mana to cast that spell.")
+                    continue
+
                 if "heal" in spell:
                     heal_amount = spell["heal"] + hero.intelligence
                     hero.health += heal_amount
                     print(f"You cast {spell['name']} and restore {heal_amount} health!")
-
-                if "damage" in spell:
+                elif "damage" in spell:
                     damage = spell["damage"] + hero.intelligence
                     print(f"You cast {spell['name']} and deal {damage} damage to the {enemy.name}!")
                     enemy.take_damage(damage)
 
-            else:
-                print("You don't know that spell.")
+                hero.mana -= spell["Mana"]
+                print(f"You have {hero.mana} mana left.")
 
                 if enemy.health > 0:
                     hero.health -= enemy.attack
@@ -114,6 +123,11 @@ def display_enemy(enemy, hero):
                 if hero.health <= 0:
                     print("You have been defeated! Game Over.")
                     return "dead"
+
+            else:
+                print("You don't know that spell.")
+
+                
 
         elif action == "run" or action == "3":
             print("You run away safely!")
@@ -134,9 +148,6 @@ def gain_xp(hero, amount):
     print(f"You gained {amount} XP!")
 
     while hero.xp >= hero.xp_to_next_level:
-        hero.xp -= hero.xp_to_next_level
-        hero.level += 1
-        hero.xp_to_next_level = 50 * (hero.level ** 2)  # Or whatever formula you choose
         print(f"Congratulations! You leveled up to level {hero.level}!")
 
         level_option = input("Choose an attribute to increase: (1) Strength, (2) Intelligence, (3) Agility: ").strip()
@@ -151,3 +162,7 @@ def gain_xp(hero, amount):
             print("Agility increased!")
         else:
             print("Invalid choice. No attribute increased.")
+
+        hero.xp -= hero.xp_to_next_level
+        hero.level += 1
+        hero.xp_to_next_level = 50 * (hero.level ** 2)  # Or whatever formula you choose

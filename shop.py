@@ -46,9 +46,12 @@ healthPotion = ShopItem("Health Potion", 25, 2)
 greaterHealthPotion = ShopItem("Greater Health Potion", 50, 1)
 manaPotion = ShopItem("Mana Potion", 25, 2)
 greaterManaPotion = ShopItem("Greater Mana Potion", 50, 1)
+bread = ShopItem("Bread", 5, 1)
+silverPendent = ShopItem("Silver Pendent", 50, 1)
 
 weapons = {
     "fists": ShopWeapon("Fists", 0, 1, 5),
+    "Wooden Sword": ShopWeapon("Wooden Sword", 0, 1, 5),
     "sword": ShopWeapon("Sword", 25, 1, 5),
     "great sword": ShopWeapon("Great Sword", 50, 1, 10),
     "staff": ShopWeapon("Staff", 30, 1, 3),
@@ -67,7 +70,8 @@ shops = {
     "mountains": [healthPotion, manaPotion, weapons["water staff"], weapons["great sword"]],
     "swamp": [greaterHealthPotion, greaterManaPotion, weapons["poison staff"]],
     "volcano": [greaterHealthPotion, greaterManaPotion],
-    "void": [weapons["Excalibur"], weapons["Caduceus Staff"]]
+    "void": [weapons["Excalibur"], weapons["Caduceus Staff"]],
+    "village": [bread, silverPendent]
 }
 
 

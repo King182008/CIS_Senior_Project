@@ -10,14 +10,15 @@ class Character:
         self.health = 100
         self.mana = 50
         self.spellList = set()
-        self.strength = 1
-        self.intelligence = 1
-        self.agility = 1
+        self.strength = 0
+        self.intelligence = 0
+        self.agility = 0
         self.xp = 0
         self.xp_to_next_level = 50 * (self.level ** 2)
-        self.gold = 100
-        self.weapon = weapons["fists"]  # Equipped weapon
+        self.gold = 5
+        self.weapon = weapons["Wooden Sword"]  # Equipped weapon
         self.inventory = {}
+        self.quest_log = {}
 
     def to_dict(self):
         return {

@@ -208,10 +208,6 @@ def home(hero, current_place):
         del hero.inventory["Bread"]
 
     # Already completed
-    elif hero.quest_log["Get Bread"] == "Complete":
-        slow_print("Your mother smiles. 'Thanks again for the bread!'")
-
-    # Actions
     if hero.quest_log["Get Bread"] == "Complete":
         action = input("Do you want to (Travel(1)) or (Sleep(2))? ").strip().lower()
 
@@ -222,13 +218,17 @@ def home(hero, current_place):
             slow_print("You go to sleep and prepare for the ascension tomorrow...")
             doom(hero)
 
+        else:
+            slow_print("Invalid action!")
+
     else:
         action = input("Do you want to (Travel(1))? ").strip().lower()
 
         if action in ["travel", "1"]:
             return travel(current_place, hero)
+        else:
+            slow_print("Invalid action!")
 
-    slow_print("Invalid action!")
     return current_place
 
 

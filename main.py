@@ -21,6 +21,8 @@ if __name__ == "__main__":
             characterCreation.show_slots()
             slot = characterCreation.choose_slot()        # ONLY CALLED ONCE
             hero = characterCreation.Character.load_character(slot)
+            from utils import actions
+            actions(hero)
 
             if hero:
                 current_slot = slot

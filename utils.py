@@ -4,13 +4,14 @@ import combat
 import inventory
 import time
 import characterCreation
+from travel import currentPlace
 
 def actions(hero):
 
     currentPlace = travel.currentPlace
 
     while True:
-        action = input("What would you like to do? (Shop, Travel, Save, Combat, Inventory, Stop) ").strip().lower()
+        action = input("What would you like to do? (Shop, Travel, Save, Combat, Interact, Inventory, Stop) ").strip().lower()
 
         # Ensure hero exists
         if hero is None:
@@ -39,6 +40,13 @@ def actions(hero):
 
         elif action == "inventory" or action == "5":
             inventory.show_inventory(hero)
+        
+        elif action == "interact" or action == "6":
+            from forest import forestInteract
+            INTERACTIONS = {
+                "forest": forestInteract,
+            }
+            INTERACTIONS[currentPlace](hero)
 
         elif action == "stop":
             print("Exiting game.")

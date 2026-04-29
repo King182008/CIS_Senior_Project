@@ -1,0 +1,20 @@
+{
+    "name": "tim",
+    "level": 1,
+    "health": 100,
+    "mana": 50,
+    "strength": 0,
+    "intelligence": 0,
+    "agility": 0,
+    "xp": 0,
+    "xp_to_next_level": 50,
+    "gold": 5,
+    "weapon": {
+        "type": "weapon",
+        "name": "Wooden Sword",
+        "price": 0,
+        "quantity": 1,
+        "damage": 5
+    },
+    "inventory": {}
+}

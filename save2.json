@@ -1,20 +1,77 @@
 {
-    "name": "tim",
-    "level": 1,
-    "health": 100,
+    "name": "Zaam",
+    "level": 3,
+    "health": 148,
     "mana": 50,
-    "strength": 0,
-    "intelligence": 0,
+    "strength": 1,
+    "intelligence": 1,
     "agility": 0,
-    "xp": 0,
-    "xp_to_next_level": 50,
-    "gold": 5,
+    "xp": 240,
+    "xp_to_next_level": 450,
+    "gold": 280,
     "weapon": {
         "type": "weapon",
-        "name": "Wooden Sword",
-        "price": 0,
+        "name": "Great Sword",
+        "price": 50,
         "quantity": 1,
-        "damage": 5
+        "damage": 10
     },
-    "inventory": {}
+    "inventory": {
+        "Locust Wing": {
+            "quantity": 2,
+            "item": {
+                "type": "item",
+                "name": "Locust Wing"
+            }
+        },
+        "Poison Staff": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Poison Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 7
+            }
+        },
+        "Rat Tail": {
+            "quantity": 23,
+            "item": {
+                "type": "item",
+                "name": "Rat Tail"
+            }
+        },
+        "Great Sword": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Great Sword",
+                "price": 50,
+                "quantity": 1,
+                "damage": 10
+            }
+        },
+        "Troll Hide": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Troll Hide"
+            }
+        },
+        "Goblin Tooth": {
+            "quantity": 2,
+            "item": {
+                "type": "item",
+                "name": "Goblin Tooth"
+            }
+        }
+    },
+    "quest_log": {
+        "Rat Problem": true,
+        "Dragon Slayer": true
+    },
+    "flags": {
+        "forest_intro_seen": true,
+        "forest_outro_seen": true
+    }
 }

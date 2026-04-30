@@ -1,7 +1,12 @@
 import characterCreation
+from desert import desertIntro
 
 currentPlace = "forest"
 placesBeen = {"forest": True,"desert": False,"mountains": False,"swamp": False,"volcano": False, "void": False}
+
+INTRO_SCENES = {
+    "desert": desertIntro
+}
 
 def travel(place, hero):
     destinations = {"forest": ["desert", "mountains"],"desert": ["forest", "swamp"],"mountains": ["forest", "volcano"],"swamp": ["desert"],"volcano": ["mountains"], "void": ["forest"]}
@@ -13,12 +18,19 @@ def travel(place, hero):
     decision = input("Where would you like to go? ").strip().lower()
     if decision not in destinations[place]:
         print("You can't go there!")
-        return place        
-         
-    
+        return place      
+
+    if not placesBeen[decision]:
+        print(f"You travel to the {decision.title()}...")
+        placesBeen[decision] = True
+
+        # Play intro if exists
+        if decision in INTRO_SCENES:
+            INTRO_SCENES[decision](hero)
+
     if placesBeen[decision] == True:
         reAsk = input("You've been here would you still like to go? (Yes or No) ")
-        if reAsk.lower() == "yes":
+        if reAsk.lower() == "yes" or reAsk.lower == "y":
             print("You traveled to", decision)
             return decision
         else: 

@@ -34,7 +34,7 @@ def create_enemy(enemy_type):
     elif enemy_type == "Cuthulu":
         return Enemy("Cuthulu", 200, 30, 100, 500, Item("Cuthulu's Eye"))
     elif enemy_type == "Henrik":
-        return Enemy("Henrik", 50, 5, 50, 50, Item(None))
+        return Enemy("Henrik", 50, 5, 50, 50, None)
 
 # Dictionary mapping regions to enemy types
 Enemies = {

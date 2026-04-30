@@ -19,6 +19,7 @@ class Character:
         self.weapon = weapons["Wooden Sword"]  # Equipped weapon
         self.inventory = {}
         self.quest_log = {}
+        self.flags = {}
 
     def to_dict(self):
         return {
@@ -33,6 +34,7 @@ class Character:
             "xp_to_next_level": self.xp_to_next_level,
             "gold": self.gold,
             "weapon": self.weapon.to_dict() if hasattr(self.weapon, "to_dict") else None,
+
             "inventory": {
                 item_name: {
                     "quantity": data["quantity"],
@@ -42,7 +44,10 @@ class Character:
                     }
                 }
                 for item_name, data in self.inventory.items()
-            }
+            },
+
+            "quest_log": self.quest_log,
+            "flags": self.flags
         }
 
     def save_character(self, slot):
@@ -78,6 +83,9 @@ class Character:
         hero.gold = data.get("gold", 100)
         hero.xp = data.get("xp", 0)
         hero.xp_to_next_level = data.get("xp_to_next_level", 50 * (hero.level ** 2))
+
+        hero.quest_log = data.get("quest_log", {})
+        hero.flags = data.get("flags", {})
 
         # ---------- Load Equipped Weapon ----------
         weapon_data = data.get("weapon")

@@ -13,6 +13,7 @@ if __name__ == "__main__":
             characterCreation.show_slots()
             slot = characterCreation.choose_slot()
             hero.save_character(slot)
+            hero.slot = slot
             characterCreation.hero = hero  # set global hero
             tutorial.Begin_tutorial(hero)  # Start the tutorial
             break
@@ -22,10 +23,12 @@ if __name__ == "__main__":
             slot = characterCreation.choose_slot()        # ONLY CALLED ONCE
             hero = characterCreation.Character.load_character(slot)
             from utils import actions
-            actions(hero)
-
             if hero:
-                current_slot = slot
+                hero.slot = slot
+
+                from utils import actions
+                actions(hero)
+
                 print(f"Character loaded: {hero.name}")
                 break
             else:

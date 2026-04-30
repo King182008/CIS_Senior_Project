@@ -1,3 +1,4 @@
+from utils import quest_board_menu
 from utils import slow_print
 from utils import actions
 
@@ -14,9 +15,8 @@ def ForestIntro(hero):
     slow_print("We need your help hero, Good luck!")
     actions(hero)
 
-def forestInteract(hero):
-    first = True
-    if first == True:
+def forestInteract(hero, place):
+    if not hero.flags.get("forest_intro_seen", False):
         slow_print("You look around to see a vast clearing, bathed in soft golden light.")
         slow_print("At its center stands an enormous ancient tree, its trunk wider than a castle tower.")
         slow_print("Its leaves shimmer faintly, pulsing with lingering time magic.")
@@ -32,17 +32,30 @@ def forestInteract(hero):
         slow_print("Without it, the world would have fallen completely into chaos.")
         slow_print("But the magic is fading… and something in the forest feeds on its power.")
 
-    while True:
-        action = input("What would you like to do (Talk, Exit): ").lower()
+        hero.flags["forest_intro_seen"] = True
 
-        if action == "talk":
+    while True:
+        action = input("What would you like to do (Talk, Quest, Lore, Exit): ").lower()
+
+        if action == "talk" or action == "1":
             talkToGaladriel(hero)
 
+        elif action == "quest" or action == "2":
+            quest_board_menu(hero)
+
+        elif action == "lore" or action == "3":
+            hero.flags["forest_intro_seen"] = False
+            forestInteract(hero, place)
+
         elif action == "exit":
-            slow_print("You step away from the Heartroot clearing, heading toward the edge of the forest.")
-            slow_print("The air grows colder as the sounds of the Elves fade behind you.")
-            slow_print("Whatever lies ahead… it won't be as safe as this place.")
-            break
+            if not hero.flags.get("forest_outro_seen", False):
+                slow_print("You step away from the Heartroot clearing, heading toward the edge of the forest.")
+                slow_print("The air grows colder as the sounds of the Elves fade behind you.")
+                slow_print("Whatever lies ahead… it won't be as safe as this place.")
+                hero.flags["forest_outro_seen"] = True
+                break
+            else:
+                break
 
         else:
             slow_print("That is not a valid action.")

@@ -1,14 +1,14 @@
 {
-    "name": "sam",
-    "level": 2,
-    "health": 35,
-    "mana": 10,
+    "name": "dildo muncher",
+    "level": 1,
+    "health": 100,
+    "mana": 50,
     "strength": 0,
     "intelligence": 0,
-    "agility": 1,
-    "xp": 50,
-    "xp_to_next_level": 200,
-    "gold": 15,
+    "agility": 0,
+    "xp": 0,
+    "xp_to_next_level": 50,
+    "gold": 0,
     "weapon": {
         "type": "weapon",
         "name": "Wooden Sword",
@@ -16,46 +16,12 @@
         "quantity": 1,
         "damage": 5
     },
-    "inventory": {
-        "Goblin Tooth": {
-            "quantity": 2,
-            "item": {
-                "type": "item",
-                "name": "Goblin Tooth"
-            }
-        },
-        "Locust Wing": {
-            "quantity": 2,
-            "item": {
-                "type": "item",
-                "name": "Locust Wing"
-            }
-        },
-        "Mana Potion": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Mana Potion",
-                "price": 25,
-                "quantity": 1
-            }
-        },
-        "Rat Tail": {
-            "quantity": 4,
-            "item": {
-                "type": "item",
-                "name": "Rat Tail"
-            }
-        },
-        "Staff": {
-            "quantity": 1,
-            "item": {
-                "type": "weapon",
-                "name": "Staff",
-                "price": 30,
-                "quantity": 1,
-                "damage": 3
-            }
-        }
+    "inventory": {},
+    "quest_log": {
+        "Get Bread": "Complete"
+    },
+    "flags": {
+        "forest_intro_seen": true,
+        "forest_outro_seen": true
     }
 }

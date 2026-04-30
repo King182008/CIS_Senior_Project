@@ -46,7 +46,7 @@ def actions(hero):
             INTERACTIONS = {
                 "forest": forestInteract,
             }
-            INTERACTIONS[currentPlace](hero)
+            INTERACTIONS[currentPlace](hero, currentPlace)
 
         elif action == "stop":
             print("Exiting game.")
@@ -60,3 +60,74 @@ def slow_print(text, delay=0.05):
         print(char, end='', flush=True)
         time.sleep(delay)
     print()
+
+forest_quest_board = {
+    "Rat Problem": {
+        "requirements": {"Rat Tail": 3},
+        "reward": {"gold": 10, "xp": 5},
+        "completed": False
+    },
+    "Goblin Threat": {
+        "requirements": {"Goblin Ear": 2},
+        "reward": {"gold": 20, "xp": 10},
+        "completed": False
+    },
+    "Dragon Slayer": {
+        "requirements": {"Dragon Scale": 1},
+        "reward": {"gold": 100, "xp": 50},
+        "completed": False
+    }
+}
+
+quest_boards = {
+    "forest": forest_quest_board
+}
+
+def handle_quest(hero, quest_name):
+    quest = quest_boards[currentPlace][quest_name]
+
+    if hero.quest_log.get(quest_name, False):
+        slow_print("You already completed this quest.")
+        return
+
+    # Check requirements
+    for item, qty in quest["requirements"].items():
+        if hero.inventory.get(item, {}).get("quantity", 0) < qty:
+            slow_print(f"You need {qty}x {item}.")
+            return
+
+    # Remove items
+    for item, qty in quest["requirements"].items():
+        hero.inventory[item]["quantity"] -= qty
+
+        if hero.inventory[item]["quantity"] <= 0:
+            del hero.inventory[item]
+
+    # Rewards
+    hero.gold += quest["reward"]["gold"]
+    hero.xp += quest["reward"]["xp"]
+
+    hero.quest_log[quest_name] = True
+
+    slow_print(f"Quest Complete: {quest_name}")
+    slow_print(f"+{quest['reward']['gold']} gold, +{quest['reward']['xp']} XP")
+
+def quest_board_menu(hero):
+    while True:
+        print("\n--- Quest Board ---")
+
+        board = quest_boards[currentPlace]
+
+        for name, quest in board.items():
+            status = "Complete" if hero.quest_log.get(name, False) else "Incomplete"
+            print(f"- {name} ({status})")
+
+        choice = input("\nSelect quest or type 'exit': ").title()
+
+        if choice == "Exit":
+            break
+
+        if choice in board:
+            handle_quest(hero, choice)
+        else:
+            slow_print("Invalid quest.")

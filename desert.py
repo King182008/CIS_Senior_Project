@@ -8,12 +8,21 @@ def desertInteract(hero, place):
     from utils import actions
     from utils import slow_print
     if not hero.flags.get("desert_interact_seen", False):
-        slow_print("The staircase down seems endless, a dim merky aura emits from the entrance")
+        slow_print("The staircase awaits you.")
+        slow_print("It seems endless, a dim merky aura emits from the entrance")
         hero.flags["desert_interact_seen"] = True
 
     while True:
-        action = input("What would ou like to do (Desend)")
+        action = input("What would ou like to do (Descend or Exit)")
 
-        if action.lower == "desend":
+        if action.lower() == "descend":
             if "Goblin Tooth" in hero.inventory:
-                slow_print("You desend into the desert dugeon")
+                slow_print("You desend into the Desert Dugeon(Feature Not added yet)")
+                break
+            else:
+                slow_print("You must kill a goblin before entering the dungeon")
+                break
+        elif action.lower() == "exit":
+            break
+        else:
+            slow_print("Invalid Action")

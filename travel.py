@@ -5,7 +5,7 @@ currentPlace = "forest"
 placesBeen = {"forest": True,"desert": False,"mountains": False,"swamp": False,"volcano": False, "void": False}
 
 INTRO_SCENES = {
-    "desert": desertIntro
+    "Desert": desertIntro
 }
 
 def travel(place, hero):
@@ -21,12 +21,11 @@ def travel(place, hero):
         return place      
 
     if not placesBeen[decision]:
-        print(f"You travel to the {decision.title()}...")
-        placesBeen[decision] = True
 
         # Play intro if exists
         if decision in INTRO_SCENES:
             INTRO_SCENES[decision](hero)
+            placesBeen[decision] = True
 
     if placesBeen[decision] == True:
         reAsk = input("You've been here would you still like to go? (Yes or No) ")
@@ -36,7 +35,7 @@ def travel(place, hero):
         else: 
             return place
     else:
-        print("You traveled to the", decision.title())
+        print(f"You travel to the {decision.title()}...")
         placesBeen[decision] = True
         return decision
         

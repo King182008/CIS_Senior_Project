@@ -43,8 +43,10 @@ def actions(hero):
         
         elif action == "interact" or action == "6":
             from forest import forestInteract
+            from desert import desertInteract
             INTERACTIONS = {
                 "forest": forestInteract,
+                "desert": desertInteract,
             }
             INTERACTIONS[currentPlace](hero, currentPlace)
 
@@ -68,7 +70,7 @@ forest_quest_board = {
         "completed": False
     },
     "Goblin Threat": {
-        "requirements": {"Goblin Ear": 2},
+        "requirements": {"Goblin Tooth": 2},
         "reward": {"gold": 20, "xp": 10},
         "completed": False
     },
@@ -79,8 +81,17 @@ forest_quest_board = {
     }
 }
 
+swamp_quest_board ={
+    "Giant Rat Problem": {
+        "requirements": {"Rat King's Crown": 3},
+        "reward": {"gold": 10, "xp": 5},
+        "completed": False
+    }
+}
+
 quest_boards = {
-    "forest": forest_quest_board
+    "forest": forest_quest_board,
+    "swamp": swamp_quest_board
 }
 
 def handle_quest(hero, quest_name):

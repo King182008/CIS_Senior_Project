@@ -1,5 +1,5 @@
 {
-    "name": "dildo muncher",
+    "name": "choncky boi",
     "level": 1,
     "health": 100,
     "mana": 50,
@@ -8,7 +8,7 @@
     "agility": 0,
     "xp": 0,
     "xp_to_next_level": 50,
-    "gold": 0,
+    "gold": 5,
     "weapon": {
         "type": "weapon",
         "name": "Wooden Sword",
@@ -17,11 +17,6 @@
         "damage": 5
     },
     "inventory": {},
-    "quest_log": {
-        "Get Bread": "Complete"
-    },
-    "flags": {
-        "forest_intro_seen": true,
-        "forest_outro_seen": true
-    }
+    "quest_log": {},
+    "flags": {}
 }

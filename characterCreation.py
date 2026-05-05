@@ -1,26 +1,69 @@
-import json
 import os
-from shop import ShopItem, ShopWeapon, weapons
+import json
+from items import Item, Weapon
 
+
+# =========================
+# SAVE SLOT UI
+# =========================
+
+def choose_slot():
+    slot = input("Choose save slot (1-3): ").strip()
+    while slot not in ["1", "2", "3"]:
+        slot = input("Invalid slot. Choose 1-3: ").strip()
+    return slot
+
+
+def show_slots():
+    print("\n=== SAVE SLOTS ===")
+
+    for i in range(1, 4):
+        file = f"save{i}.json"
+
+        if not os.path.exists(file):
+            print(f"Slot {i}: EMPTY")
+            continue
+
+        try:
+            with open(file, "r") as f:
+                data = json.load(f)
+
+            print(f"Slot {i}: {data.get('name', 'Unknown')} (Level {data.get('level', 1)})")
+
+        except:
+            print(f"Slot {i}: CORRUPTED SAVE")
+
+
+# =========================
+# CHARACTER CLASS
+# =========================
 
 class Character:
     def __init__(self, name):
         self.name = name
+
         self.level = 1
         self.health = 100
         self.mana = 50
-        self.spellList = set()
-        self.strength = 0
-        self.intelligence = 0
-        self.agility = 0
+
+        self.strength = 1
+        self.intelligence = 1
+        self.agility = 1
+
         self.xp = 0
-        self.xp_to_next_level = 50 * (self.level ** 2)
+        self.xp_to_next_level = 50
+
         self.gold = 5
-        self.weapon = weapons["Wooden Sword"]  # Equipped weapon
+
+        self.weapon = Weapon("Fists", 0, 5)
+
         self.inventory = {}
         self.quest_log = {}
         self.flags = {}
 
+    # =========================
+    # SAVE
+    # =========================
     def to_dict(self):
         return {
             "name": self.name,
@@ -33,17 +76,15 @@ class Character:
             "xp": self.xp,
             "xp_to_next_level": self.xp_to_next_level,
             "gold": self.gold,
-            "weapon": self.weapon.to_dict() if hasattr(self.weapon, "to_dict") else None,
+
+            "weapon": self.weapon.to_dict(),
 
             "inventory": {
-                item_name: {
-                    "quantity": data["quantity"],
-                    "item": data["item"].to_dict() if hasattr(data["item"], "to_dict") else {
-                        "type": "item",
-                        "name": data["item"].name
-                    }
+                k: {
+                    "item": v["item"].to_dict(),
+                    "quantity": v["quantity"]
                 }
-                for item_name, data in self.inventory.items()
+                for k, v in self.inventory.items()
             },
 
             "quest_log": self.quest_log,
@@ -51,129 +92,107 @@ class Character:
         }
 
     def save_character(self, slot):
-        filename = f"save{slot}.json"
-        with open(filename, "w") as file:
-            json.dump(self.to_dict(), file, indent=4)
-        print(f"Game saved in slot {slot}!")
+        with open(f"save{slot}.json", "w") as f:
+            json.dump(self.to_dict(), f, indent=4)
+        print(f"Saved slot {slot}")
 
+    # =========================
+    # LOAD (FIXED & SAFE)
+    # =========================
     @classmethod
     def load_character(cls, slot):
-        filename = f"save{slot}.json"
+        path = f"save{slot}.json"
 
-        if not os.path.exists(filename):
-            print("No save file in that slot.")
+        if not os.path.exists(path):
+            print("No save found.")
             return None
 
-        with open(filename, "r") as file:
-            try:
-                data = json.load(file)
-            except json.JSONDecodeError:
-                print("Save file is corrupted.")
-                return None
+        with open(path, "r") as f:
+            data = json.load(f)
 
-        hero = cls(data["name"])
+        hero = cls(data.get("name", "Unknown"))
 
-        # ---------- Basic Stats ----------
+        # stats (safe defaults)
         hero.level = data.get("level", 1)
         hero.health = data.get("health", 100)
         hero.mana = data.get("mana", 50)
+
         hero.strength = data.get("strength", 1)
         hero.intelligence = data.get("intelligence", 1)
         hero.agility = data.get("agility", 1)
-        hero.gold = data.get("gold", 100)
+
         hero.xp = data.get("xp", 0)
-        hero.xp_to_next_level = data.get("xp_to_next_level", 50 * (hero.level ** 2))
+        hero.xp_to_next_level = data.get("xp_to_next_level", 50)
+        hero.gold = data.get("gold", 0)
 
         hero.quest_log = data.get("quest_log", {})
         hero.flags = data.get("flags", {})
 
-        # ---------- Load Equipped Weapon ----------
-        weapon_data = data.get("weapon")
-        if weapon_data and weapon_data.get("type") == "weapon":
-            hero.weapon = ShopWeapon(
-                weapon_data["name"],
-                weapon_data["price"],
-                1,
-                weapon_data["damage"]
+        # =========================
+        # WEAPON LOAD (SAFE)
+        # =========================
+        w = data.get("weapon")
+
+        if w and w.get("type") == "Weapon":
+            hero.weapon = Weapon(
+                w["name"],
+                w.get("price", 0),
+                w.get("damage", 0)
             )
         else:
-            hero.weapon = None
+            hero.weapon = Weapon("Fists", 0, 5)
 
-        # ---------- Load Inventory ----------
+        # =========================
+        # INVENTORY LOAD (FIXED)
+        # =========================
         hero.inventory = {}
 
-        for item_name, item_data in data.get("inventory", {}).items():
+        for k, v in data.get("inventory", {}).items():
 
-            saved_item = item_data["item"]
-            quantity = item_data["quantity"]
+            item = v.get("item", {})
 
-            # Weapon
-            if saved_item.get("type") == "weapon":
-                item_obj = ShopWeapon(
-                    saved_item["name"],
-                    saved_item.get("price", 0),
-                    1,
-                    saved_item["damage"]
-                )
+            name = item.get("name", "Unknown")
+            price = item.get("price", 0)
+            damage = item.get("damage", 0)
+            item_type = item.get("type", "Item")
 
-            # ShopItem
-            elif saved_item.get("type") == "item" and "price" in saved_item:
-                item_obj = ShopItem(
-                    saved_item["name"],
-                    saved_item["price"],
-                    1
-                )
-
-            # Combat drop (like Rat Tail)
+            if item_type == "Weapon":
+                obj = Weapon(name, price, damage)
             else:
-                from combat import Item
-                item_obj = Item(saved_item["name"])
+                obj = Item(name, price)
 
-            hero.inventory[item_name] = {
-                "item": item_obj,
-                "quantity": quantity
+            hero.inventory[k] = {
+                "item": obj,
+                "quantity": v["quantity"]
             }
 
-        print(f"Loaded character {hero.name} from slot {slot}")
+        print(f"Loaded {hero.name}")
         return hero
 
 
-# -------------------- UTILITY --------------------
-
-def choose_slot():
-    slot = input("Choose save slot (1-3): ")
-    while slot not in ["1", "2", "3"]:
-        slot = input("Invalid slot. Choose 1-3: ")
-    return slot
-
-
-def show_slots():
-    for i in range(1, 4):
-        filename = f"save{i}.json"
-        if os.path.exists(filename):
-            try:
-                with open(filename, "r") as file:
-                    data = json.load(file)
-                print(f"Slot {i}: USED ({data.get('name', 'Unknown')})")
-            except json.JSONDecodeError:
-                print(f"Slot {i}: CORRUPTED SAVE")
-        else:
-            print(f"Slot {i}: EMPTY")
-
+# =========================
+# CREATE CHARACTER
+# =========================
 
 def create_character():
-    name = input("Enter your character's name: ").strip()
-    while name == "":
-        name = input("Name cannot be empty. Enter a name: ").strip()
-    char = Character(name)
-    print(f"Welcome, {char.name}!")
-    return char
+    name = input("Enter name: ").strip()
+
+    while not name:
+        name = input("Name cannot be empty: ").strip()
+
+    print(f"Welcome {name}")
+    return Character(name)
+
+
+# =========================
+# DELETE SAVE
+# =========================
 
 def delete_save(slot):
-    filename = f"save{slot}.json"
+    file = f"save{slot}.json"
 
-    if os.path.exists(filename):
-        os.remove(filename)
-        print(f"Save slot {slot} deleted.")
+    if os.path.exists(file):
+        os.remove(file)
+        print("Save deleted")
     else:
-        print("No save file to delete.")
+        print("No save found")

@@ -1,5 +1,6 @@
 import characterCreation
 import tutorial
+from travel import currentPlace
 
 if __name__ == "__main__":
     # -------------------- CHARACTER CREATION / LOAD --------------------
@@ -14,20 +15,20 @@ if __name__ == "__main__":
             slot = characterCreation.choose_slot()
             hero.save_character(slot)
             hero.slot = slot
-            characterCreation.hero = hero  # set global hero
-            tutorial.Begin_tutorial(hero)  # Start the tutorial
+            characterCreation.hero = hero
+            tutorial.Begin_tutorial(hero)
             break
 
         elif choice == "load":
             characterCreation.show_slots()
-            slot = characterCreation.choose_slot()        # ONLY CALLED ONCE
+            slot = characterCreation.choose_slot()
             hero = characterCreation.Character.load_character(slot)
             from utils import actions
             if hero:
                 hero.slot = slot
 
                 from utils import actions
-                actions(hero)
+                actions(hero, currentPlace)
 
                 print(f"Character loaded: {hero.name}")
                 break

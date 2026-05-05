@@ -1,41 +1,27 @@
 {
-    "name": "Sqiggle",
-    "level": 4,
-    "health": 292,
-    "mana": 145,
-    "strength": 2,
+    "name": "Sqiggles",
+    "level": 3,
+    "health": 102,
+    "mana": 220,
+    "strength": 1,
     "intelligence": 0,
     "agility": 0,
-    "xp": 110,
-    "xp_to_next_level": 800,
-    "gold": 420,
+    "xp": 0,
+    "xp_to_next_level": 450,
+    "gold": 115,
     "weapon": {
         "type": "weapon",
-        "name": "Excalibur",
-        "price": 100,
+        "name": "Great Sword",
+        "price": 50,
         "quantity": 1,
-        "damage": 20
+        "damage": 10
     },
     "inventory": {
         "Rat Tail": {
-            "quantity": 102,
+            "quantity": 26,
             "item": {
                 "type": "item",
                 "name": "Rat Tail"
-            }
-        },
-        "Goblin Tooth": {
-            "quantity": 2,
-            "item": {
-                "type": "item",
-                "name": "Goblin Tooth"
-            }
-        },
-        "Locust Wing": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Locust Wing"
             }
         },
         "Sword": {
@@ -58,38 +44,22 @@
                 "damage": 10
             }
         },
-        "Troll Hide": {
-            "quantity": 2,
-            "item": {
-                "type": "item",
-                "name": "Troll Hide"
-            }
-        },
-        "Dragon Scale": {
+        "Rat King's Crown": {
             "quantity": 1,
             "item": {
                 "type": "item",
-                "name": "Dragon Scale"
-            }
-        },
-        "Excalibur": {
-            "quantity": 1,
-            "item": {
-                "type": "weapon",
-                "name": "Excalibur",
-                "price": 100,
-                "quantity": 1,
-                "damage": 20
-            }
-        },
-        "Health Potion": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Health Potion",
-                "price": 25,
-                "quantity": 1
+                "name": "Rat King's Crown"
             }
         }
+    },
+    "quest_log": {
+        "Get Bread": "Complete",
+        "Rat Problem": true
+    },
+    "flags": {
+        "forest_intro_seen": true,
+        "forest_outro_seen": true,
+        "swamp_interact_seen": true,
+        "rat_king_defeated": true
     }
 }

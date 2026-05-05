@@ -1,21 +1,15 @@
 {
     "name": "Zaam",
-    "level": 3,
-    "health": 148,
+    "level": 5,
+    "health": 230,
     "mana": 50,
-    "strength": 1,
+    "strength": 2,
     "intelligence": 1,
     "agility": 0,
-    "xp": 240,
-    "xp_to_next_level": 450,
-    "gold": 280,
-    "weapon": {
-        "type": "weapon",
-        "name": "Great Sword",
-        "price": 50,
-        "quantity": 1,
-        "damage": 10
-    },
+    "xp": 75,
+    "xp_to_next_level": 1250,
+    "gold": 750,
+    "weapon": null,
     "inventory": {
         "Locust Wing": {
             "quantity": 2,
@@ -27,15 +21,12 @@
         "Poison Staff": {
             "quantity": 1,
             "item": {
-                "type": "weapon",
-                "name": "Poison Staff",
-                "price": 40,
-                "quantity": 1,
-                "damage": 7
+                "type": "item",
+                "name": "Poison Staff"
             }
         },
         "Rat Tail": {
-            "quantity": 23,
+            "quantity": 100,
             "item": {
                 "type": "item",
                 "name": "Rat Tail"
@@ -44,11 +35,8 @@
         "Great Sword": {
             "quantity": 1,
             "item": {
-                "type": "weapon",
-                "name": "Great Sword",
-                "price": 50,
-                "quantity": 1,
-                "damage": 10
+                "type": "item",
+                "name": "Great Sword"
             }
         },
         "Troll Hide": {
@@ -64,6 +52,20 @@
                 "type": "item",
                 "name": "Goblin Tooth"
             }
+        },
+        "Dragon Scale": {
+            "quantity": 3,
+            "item": {
+                "type": "item",
+                "name": "Dragon Scale"
+            }
+        },
+        "Excalibur": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Excalibur"
+            }
         }
     },
     "quest_log": {
@@ -72,6 +74,10 @@
     },
     "flags": {
         "forest_intro_seen": true,
-        "forest_outro_seen": true
+        "forest_outro_seen": true,
+        "swamp_interact_seen": true,
+        "rat_king_defeated": true,
+        "volcano_intro_seen": true,
+        "mountain_intro_seen": true
     }
 }

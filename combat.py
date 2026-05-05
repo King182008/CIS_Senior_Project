@@ -1,172 +1,190 @@
-import characterCreation
+import time
+import random
+from utils import slow_print, danger, highlight, lore
+
+
+# =========================
+# ENEMY SYSTEM
+# =========================
 
 class Item:
     def __init__(self, name):
         self.name = name
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
+
 
 class Enemy:
     def __init__(self, name, health, attack, gold, xp, loot):
         self.name = name
+        self.max_health = health
         self.health = health
         self.attack = attack
         self.gold = gold
         self.xp = xp
         self.loot = loot
 
-    def take_damage(self, damage):
-        self.health -= damage
+    def take_damage(self, dmg):
+        self.health -= dmg
 
-# Factory function to create fresh enemy instances
+
+# =========================
+# ENEMY FACTORY
+# =========================
+
 def create_enemy(enemy_type):
-    if enemy_type == "Rat":
-        return Enemy("Rat", 10, 2, 5, 5, Item("Rat Tail"))
-    elif enemy_type == "Goblin":
-        return Enemy("Goblin", 20, 5, 10, 10, Item("Goblin Tooth"))
-    elif enemy_type == "Troll":
-        return Enemy("Troll", 50, 10, 25, 25, Item("Troll Hide"))
-    elif enemy_type == "Locust Swarm":
-        return Enemy("Locust Swarm", 30, 7, 15, 30, Item("Locust Wing"))
-    elif enemy_type == "Dragon":
-        return Enemy("Dragon", 100, 20, 50, 200, Item("Dragon Scale"))
-    elif enemy_type == "Cuthulu":
-        return Enemy("Cuthulu", 200, 30, 100, 500, Item("Cuthulu's Eye"))
-    elif enemy_type == "Henrik":
-        return Enemy("Henrik", 50, 5, 50, 50, None)
-    elif enemy_type == "Rat King":
-        return Enemy("Rat King", 75, 12, 35, 100, Item("Rat King's Crown") )
+    enemies = {
+        "Rat": Enemy("Rat", 10, 2, 5, 5, Item("Rat Tail")),
+        "Goblin": Enemy("Goblin", 20, 5, 10, 10, Item("Goblin Tooth")),
+        "Troll": Enemy("Troll", 50, 10, 25, 25, Item("Troll Hide")),
+        "Locust Swarm": Enemy("Locust Swarm", 30, 7, 15, 30, Item("Locust Wing")),
+        "Dragon": Enemy("Dragon", 100, 20, 50, 200, Item("Dragon Scale")),
+        "Cuthulu": Enemy("Cuthulu", 200, 30, 100, 500, Item("Cuthulu's Eye")),
+        "Rat King": Enemy("Rat King", 75, 12, 35, 100, Item("Rat King's Crown"))
+    }
+    return enemies.get(enemy_type)
 
-# Dictionary mapping regions to enemy types
+
+# =========================
+# REGION ENEMIES
+# =========================
+
 Enemies = {
     "forest": ["Rat"],
     "desert": ["Goblin"],
     "mountains": ["Troll"],
     "swamp": ["Locust Swarm"],
     "volcano": ["Dragon"],
-    "void": ["Cuthulu"]
+    "void": []
 }
 
-spells = {
-    "heal": {"name": "Heal", "damage": 0, "heal": 20, "Mana": 20},
-    "fireball": {"name": "FireBall", "damage": 30, "Mana": 50},
-    "crash": {"name": "Crash", "damage": 25, "Mana": 35},
-    "poison cloud": {"name": "Poison Cloud", "damage": 15, "Mana": 15}
-}
+
+# =========================
+# COMBAT UI HELPERS
+# =========================
+
+def combat_pause(text="", delay=0.02):
+    """Fast animation text for combat feel"""
+    for char in text:
+        print(char, end="", flush=True)
+        time.sleep(delay)
+    print()
+
+
+def divider():
+    print("\n" + "-" * 50 + "\n")
+
+
+def enemy_intro(enemy):
+    divider()
+    combat_pause(f"A wild {enemy.name} appears...")
+    time.sleep(0.4)
+    combat_pause(f"HP: {enemy.health} | ATK: {enemy.attack}")
+    divider()
+
+
+# =========================
+# MAIN COMBAT
+# =========================
 
 def display_enemy(enemy, hero):
-    print(f"\nYou encounter a {enemy.name}!")
-    print(f"Health: {enemy.health}")
-    print(f"Attack: {enemy.attack}")
+    from inventory import add_item
+    enemy_intro(enemy)
 
     while enemy.health > 0:
-        action = input("Do you want to (Attack, Spell or Run)? ").strip().lower()
 
-        if action == "attack" or action == "1":
-            damage = hero.strength
-            if hasattr(hero, "weapon") and hero.weapon is not None:
-                damage += hero.weapon.damage
+        combat_pause(f"\nYour HP: {hero.health} | Mana: {hero.mana}")
+        combat_pause(f"{enemy.name} HP: {enemy.health}/{enemy.max_health}")
+        print()
 
-            print(f"\nYou attack the {enemy.name} for {damage} damage!")
+        action = input("(1) Attack  (2) Spell  (3) Run > ").strip().lower()
+
+        # ================= ATTACK =================
+        if action in ["1", "attack"]:
+
+            damage = hero.strength + (hero.weapon.damage if hero.weapon else 0)
+
+            combat_pause(f"\nYou strike the {enemy.name}...")
+            time.sleep(0.2)
+            combat_pause(f"Dealt {damage} damage!")
+
             enemy.take_damage(damage)
 
-            print(f"You regained 5 mana. You know have {hero.mana} mana.")
             hero.mana += 5
+            combat_pause("You recover 5 mana from the clash.")
 
-            
-            if enemy.health > 0:
-                hero.health -= enemy.attack
-                print(f"You take {enemy.attack} damage. Your health is now {hero.health}.")
+        # ================= SPELL =================
+        elif action in ["2", "spell"]:
 
-                if hero.health <= 0:
-                    print("You have been defeated! Game Over.")
-                    return "dead"
-
-        elif action == "spell" or action == "2":
-            weapon_name = hero.weapon.name.lower()
-
-            # Always ensure heal exists
             hero.spellList.add("heal")
 
-            # Add weapon-based spells (no duplicates automatically)
-            if "fire" in weapon_name:
+            weapon = hero.weapon.name.lower()
+
+            if "fire" in weapon:
                 hero.spellList.add("fireball")
-            elif "water" in weapon_name:
+            elif "water" in weapon:
                 hero.spellList.add("crash")
-            elif "poison" in weapon_name:
+            elif "poison" in weapon:
                 hero.spellList.add("poison cloud")
 
-            print("You can cast:", list(hero.spellList))  # convert to list for display
+            combat_pause(f"Spells available: {list(hero.spellList)}")
 
-            spell_choice = input("Which spell do you want to cast? ").strip().lower()
+            spell_choice = input("Cast spell > ").strip().lower()
 
-            if spell_choice in hero.spellList:
-                spell = spells[spell_choice]
+            if spell_choice not in hero.spellList:
+                combat_pause(danger("Invalid spell."))
+                continue
 
-                if hero.mana - spell["Mana"] < 0:
-                    print("Not enough mana to cast that spell.")
-                    continue
+            spell = {
+                "heal": {"mana": 20, "heal": 20},
+                "fireball": {"mana": 50, "damage": 30},
+                "crash": {"mana": 35, "damage": 25},
+                "poison cloud": {"mana": 15, "damage": 15}
+            }[spell_choice]
 
-                if "heal" in spell:
-                    heal_amount = spell["heal"] + hero.intelligence
-                    hero.health += heal_amount
-                    print(f"You cast {spell['name']} and restore {heal_amount} health!")
-                elif "damage" in spell:
-                    damage = spell["damage"] + hero.intelligence
-                    print(f"You cast {spell['name']} and deal {damage} damage to the {enemy.name}!")
-                    enemy.take_damage(damage)
+            if hero.mana < spell["mana"]:
+                combat_pause(danger("Not enough mana."))
+                continue
 
-                hero.mana -= spell["Mana"]
-                print(f"You have {hero.mana} mana left.")
+            hero.mana -= spell["mana"]
 
-                if enemy.health > 0:
-                    hero.health -= enemy.attack
-                    print(f"You take {enemy.attack} damage. Your health is now {hero.health}.")
-
-                if hero.health <= 0:
-                    print("You have been defeated! Game Over.")
-                    return "dead"
-
+            if "heal" in spell:
+                heal = spell["heal"] + hero.intelligence
+                hero.health += heal
+                combat_pause(f"You heal for {heal} HP!")
             else:
-                print("You don't know that spell.")
+                dmg = spell["damage"] + hero.intelligence
+                enemy.take_damage(dmg)
+                combat_pause(f"You cast {spell_choice} for {dmg} damage!")
 
-                
-
-        elif action == "run" or action == "3":
-            print("You run away safely!")
-            return "ran"
+        # ================= RUN =================
+        elif action in ["3", "run"]:
+            if random.random() < 0.6:
+                combat_pause("You escape successfully...")
+                return "ran"
+            else:
+                combat_pause("You failed to escape!")
 
         else:
-            print("Invalid action. Please choose 'Attack', 'Spell' or 'Run'.")
+            combat_pause("Invalid action.")
+            continue
 
-    print(f"\nVictory! {enemy.name} has been defeated!")
+        # ================= ENEMY TURN =================
+        if enemy.health > 0:
+            combat_pause(f"\n{enemy.name} attacks!")
+            hero.health -= enemy.attack
+            combat_pause(f"You take {enemy.attack} damage.")
+
+            if hero.health <= 0:
+                combat_pause(danger("You have fallen in battle..."))
+                return "dead"
+
+    # ================= WIN =================
+    divider()
+    combat_pause(f"{enemy.name} defeated!")
     hero.gold += enemy.gold
-    from inventory import add_item
     add_item(enemy.loot, hero)
-    print(f"You gain {enemy.gold} gold and loot: {enemy.loot}.")
-    gain_xp(hero, enemy.xp)
 
-def gain_xp(hero, amount):
-    hero.xp += amount
-    print(f"You gained {amount} XP!")
-
-    while hero.xp >= hero.xp_to_next_level:
-        print(f"Congratulations! You leveled up to level {hero.level}!")
-
-        level_option = input("Choose an attribute to increase: (1) Strength, (2) Intelligence, (3) Agility: ").strip()
-        if level_option == "1":
-            hero.strength += 1
-            print("Strength increased!")
-        elif level_option == "2":
-            hero.intelligence += 1
-            print("Intelligence increased!")
-        elif level_option == "3":
-            hero.agility += 1
-            print("Agility increased!")
-        else:
-            print("Invalid choice. No attribute increased.")
-
-        hero.xp -= hero.xp_to_next_level
-        hero.level += 1
-        hero.xp_to_next_level = 50 * (hero.level ** 2)  # Or whatever formula you choose
+    combat_pause(f"You gain {enemy.gold} gold and {enemy.loot}.")
+    return "win"

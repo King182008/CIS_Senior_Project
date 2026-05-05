@@ -34,7 +34,7 @@ def tutorial_combat(enemy, hero):
 
     # Step 1: Attack
     while enemy.health > 45:
-        action = input("Do you want to (Attack or 1)? ").strip().lower()
+        action = input("Do you want to (Attack or 1)?").strip().lower()
 
         if action in ["attack", "1"]:
             damage = get_attack_damage(hero)

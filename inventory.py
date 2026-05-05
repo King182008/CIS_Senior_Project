@@ -1,67 +1,71 @@
-import characterCreation
-import shop
-import combat
+from items import Item, Weapon, is_weapon
+from utils import slow_print, highlight
+
 
 def show_inventory(hero):
 
     if not hero.inventory:
-        print("\nYour inventory is empty.")
-        print(f"Gold: {hero.gold}")
+        print("Inventory empty")
         return
 
-    print("\nYour Inventory:")
-    for i, (item_name, data) in enumerate(hero.inventory.items(), 1):
-        print(f"{i}. {item_name} x{data['quantity']}")
+    items = list(hero.inventory.items())
 
-    choice = input("\nDo you want to use or equip an item? (use/equip/exit) ").strip().lower()
+    print("\nINVENTORY")
+    for i, (key, data) in enumerate(items, 1):
+        item = data["item"]
+        qty = data["quantity"]
+        print(f"{i}. {item.name} x{qty}")
+
+    print("\n[use] [equip] [exit]")
+    choice = input(">> ").strip().lower()
+
     if choice == "exit":
         return
 
-    item_name = input("Enter the name of the item: ").strip()
-
-    if item_name not in hero.inventory:
-        print(f"No item named '{item_name}' found in your inventory.")
+    if choice not in ["use", "equip"]:
+        print("Invalid option")
         return
 
-    item_data = hero.inventory[item_name]
-    item = item_data["item"]
+    try:
+        index = int(input("Select item number: ")) - 1
+        key, data = items[index]
+    except:
+        print("Invalid selection")
+        return
 
-    # ---------- USE ITEM ----------
+    item = data["item"]
+
+    # =========================
+    # USE ITEM
+    # =========================
     if choice == "use":
 
-        if isinstance(item, shop.ShopWeapon):
-            print("That item cannot be used.")
+        if isinstance(item, Weapon):
+            print("Weapons cannot be used")
             return
 
-        if "health" in item.name.lower():
-            restore = 50 if "greater" in item.name.lower() else 25
-            hero.health += restore
-            print(f"You used {item.name} and restored {restore} health. Current health: {hero.health}")
+        name = item.name.lower()
 
-        elif "mana" in item.name.lower():
-            restore = 50 if "greater" in item.name.lower() else 25
-            hero.mana += restore
-            print(f"You used {item.name} and restored {restore} mana. Current mana: {hero.mana}")
+        if "health" in name:
+            hero.health += 25
+        elif "mana" in name:
+            hero.mana += 25
+        else:
+            print("Nothing happens")
 
-        # Reduce quantity
-        item_data["quantity"] -= 1
-        if item_data["quantity"] <= 0:
-            del hero.inventory[item_name]
+        data["quantity"] -= 1
 
-    # ---------- EQUIP ITEM ----------
+        if data["quantity"] <= 0:
+            del hero.inventory[key]
+
+
+    # =========================
+    # EQUIP WEAPON
+    # =========================
     elif choice == "equip":
 
-        if isinstance(item, shop.ShopWeapon):
+        if isinstance(item, Weapon):
             hero.weapon = item
-            print(f"You equipped {item.name}.")
+            slow_print(f"Equipped {highlight(item.name)}")
         else:
-            print("That item cannot be equipped.")
-
-def add_item(item, hero):
-    if item.name in hero.inventory:
-        hero.inventory[item.name]["quantity"] += 1
-    else:
-        hero.inventory[item.name] = {
-            "item": item,
-            "quantity": 1
-        }
+            print("Not a weapon")

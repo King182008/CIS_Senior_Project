@@ -4,7 +4,6 @@ from swamp import swampIntro
 from mountain import mountainIntro
 from volcano import volcanoIntro
 from void import voidIntro
-currentPlace = "forest"
 placesBeen = {"forest": True,"desert": False,"mountains": False,"swamp": False,"volcano": False, "void": False}
 
 INTRO_SCENES = {
@@ -15,6 +14,8 @@ INTRO_SCENES = {
     "void": voidIntro
 }
 
+
+from utils import highlight, danger, name
 
 def travel(place, hero):
     destinations = {
@@ -32,29 +33,60 @@ def travel(place, hero):
         if "void" not in destinations["forest"]:
             destinations["forest"].append("void")
 
-    print("You're currently at the", place.title())
-    print("You can travel to locations", [d.title() for d in destinations[place]])
+    print(highlight("\n=== WORLD MAP ==="))
+    print(f"Current Location: {name(place.title())}")
+    print("-" * 40)
 
-    decision = input("Where would you like to go? ").strip().lower()
+    options = destinations[place]
 
-    if decision not in destinations[place]:
-        print("You can't go there!")
+    # =========================
+    # DISPLAY OPTIONS (COLORED + NUMBERED)
+    # =========================
+    for i, dest in enumerate(options, 1):
+        print(f"{highlight(str(i) + '.')} {name(dest.title())}")
+
+    print("-" * 40)
+
+    # =========================
+    # FAST INPUT (NUMBER ONLY)
+    # =========================
+    decision = input(
+        f"Choose destination {highlight('(number)')} or {danger('exit')}:\n>> "
+    ).strip().lower()
+
+    if decision == "exit":
         return place
 
-    # Already visited
-    if placesBeen[decision]:
-        reAsk = input("You've been here, go anyway? (yes/no) ").strip().lower()
-        if reAsk in ["yes", "y"]:
-            print(f"You traveled to the {decision.title()}")
-            return decision
-        else:
+    if not decision.isdigit():
+        print(danger("Invalid input. Use numbers only."))
+        return place
+
+    index = int(decision) - 1
+
+    if index < 0 or index >= len(options):
+        print(danger("You can't go there!"))
+        return place
+
+    chosen = options[index]
+
+    # =========================
+    # REVISIT CHECK
+    # =========================
+    if placesBeen[chosen]:
+        reAsk = input(
+            f"You've been to {name(chosen.title())}. Travel anyway? {highlight('(y/n)')}:\n>> "
+        ).strip().lower()
+
+        if reAsk not in ["y", "yes"]:
             return place
 
-    # FIRST TIME VISIT
-    print(f"You travel to the {decision.title()}...")
+    print(highlight(f"\nTraveling to {chosen.title()}...\n"))
 
-    if decision in INTRO_SCENES:
-        INTRO_SCENES[decision](hero)
+    # =========================
+    # FIRST TIME INTRO
+    # =========================
+    if not placesBeen[chosen] and chosen in INTRO_SCENES:
+        INTRO_SCENES[chosen](hero)
 
-    placesBeen[decision] = True
-    return decision
+    placesBeen[chosen] = True
+    return chosen

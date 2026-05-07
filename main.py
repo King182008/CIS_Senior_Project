@@ -1,42 +1,79 @@
 import characterCreation
 import tutorial
-from travel import currentPlace
+
+
 
 if __name__ == "__main__":
-    # -------------------- CHARACTER CREATION / LOAD --------------------
+    from utils import highlight, danger, name, lore
+
     hero = None
 
-    while True:
-        choice = input("New Game, Load Game or Show Slots? (New, Load, Show) ").strip().lower()
+    print(highlight("\n================================"))
+    print(highlight("      TEXT RPG ADVENTURE"))
+    print(highlight("================================"))
 
-        if choice == "new":
+    while True:
+
+        print(highlight("\n=== MAIN MENU ==="))
+        print(f"1. {highlight('New Game')}")
+        print(f"2. {highlight('Load Game')}")
+        print(f"3. {highlight('Show Save Slots')}")
+        print(f"4. {danger('Exit')}")
+        print("-" * 35)
+
+        choice = input("Select option (1-4 or name): ").strip().lower()
+
+        # =========================
+        # NEW GAME
+        # =========================
+        if choice in ["1", "new"]:
             hero = characterCreation.create_character()
+
             characterCreation.show_slots()
             slot = characterCreation.choose_slot()
+
             hero.save_character(slot)
             hero.slot = slot
+
             characterCreation.hero = hero
+
+            print(lore("\nStarting tutorial...\n"))
             tutorial.Begin_tutorial(hero)
             break
 
-        elif choice == "load":
+        # =========================
+        # LOAD GAME
+        # =========================
+        elif choice in ["2", "load"]:
             characterCreation.show_slots()
+
             slot = characterCreation.choose_slot()
             hero = characterCreation.Character.load_character(slot)
-            from utils import actions
+
             if hero:
                 hero.slot = slot
 
-                from utils import actions
-                actions(hero, currentPlace)
+                print(lore(f"\nWelcome back, {name(hero.name)}!\n"))
 
-                print(f"Character loaded: {hero.name}")
+                from utils import actions
+                actions(hero)
+
                 break
             else:
-                print("Failed to load. Try again or start a new game.")
+                print(danger("Failed to load game. Try again."))
 
-        elif choice == "show":
+        # =========================
+        # SHOW SLOTS
+        # =========================
+        elif choice in ["3", "show"]:
             characterCreation.show_slots()
 
+        # =========================
+        # EXIT
+        # =========================
+        elif choice in ["4", "exit"]:
+            print(danger("Exiting game..."))
+            break
+
         else:
-            print("Invalid choice. Please choose New, Load, or Show.")
+            print(danger("Invalid choice. Please try again."))

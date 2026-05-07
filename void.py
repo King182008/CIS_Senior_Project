@@ -1,4 +1,4 @@
-from utils import slow_print, danger, lore, highlight
+from utils import slow_print, danger, lore, highlight, name
 import combat
 
 
@@ -22,30 +22,18 @@ def voidIntro(hero):
     if hero.flags.get("void_intro_seen", False):
         return
 
-    slow_print("You step beyond the edge of the known world… and something feels wrong immediately.")
+    slow_print("You step beyond the edge of the known world…")
+    slow_print(danger("Something is wrong."))
 
-    slow_print(danger("There is no wind. No sound. Not even your own footsteps."))
     slow_print("")
+    slow_print(lore("The ground shifts like a memory trying to exist."))
+    slow_print("Fragments of reality flicker in and out.")
 
-    slow_print(lore("The ground beneath you shifts—not like earth, but like a memory trying to hold its shape."))
+    slow_print(danger("Time stutters. Breaks. Repeats."))
 
-    slow_print("Fragments of places you've been flicker in and out of existence around you.")
-    slow_print("The forest burns… then regrows.")
-    slow_print("The desert collapses… then stands whole again.")
     slow_print("")
-
-    slow_print(danger("Time does not move here."))
-    slow_print(danger("It stutters. Repeats. Breaks."))
-    slow_print("")
-
-    slow_print("A pressure builds in your chest, as if something vast is aware of you.")
-    slow_print(lore("Not watching… but remembering."))
-    slow_print("")
-
-    slow_print("This is not a place.")
-    slow_print(highlight("This is where reality ends."))
-    slow_print("")
-    slow_print(danger("This… is where the Horror began."))
+    slow_print(highlight("This is not a place."))
+    slow_print(danger("This is where reality ends."))
 
     show_void_lore()
 
@@ -56,78 +44,97 @@ def voidIntro(hero):
 # Interaction
 # =========================
 def voidInteract(hero, place):
+
+    # Ensure boss flag exists
+    hero.flags.setdefault("void_boss_defeated", False)
+
+    # First-time entry flavor
     if not hero.flags.get("void_intro_seen", False):
-        slow_print("You step forward… but the ground does not respond.")
-        slow_print(lore("It feels like you are moving, yet nothing changes."))
-
-        slow_print("The world around you flickers—like a memory struggling to exist.")
-        slow_print("")
-
-        slow_print(danger("A voice echoes… not from ahead, but from within you."))
-        slow_print("\"You should not be here.\"")
-
-        slow_print("")
-        slow_print("Shapes form in the distance—places you've been before.")
-        slow_print("The forest. The desert. The mountains.")
-        slow_print(danger("All of them… collapsing into nothing."))
-
-        slow_print("")
+        slow_print(lore("You move… but nothing changes."))
+        slow_print(danger("A voice echoes inside you: \"You should not be here.\""))
         show_void_lore()
-
-        slow_print("")
-        slow_print(danger("Something here recognizes you."))
-
         hero.flags["void_intro_seen"] = True
 
     while True:
-        action = input("What would you like to do? (Call, Observe, Advance, Exit): ").lower()
+        print(highlight("\n=== VOID INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Observe')}")
+        print(f"2. {name('Call Out')}")
+        print(f"3. {name('Advance')}")
+        print(f"4. {danger('Exit')}")
+        print("-" * 40)
 
-        if action == "observe":
-            slow_print("You try to focus on your surroundings...")
+        action = input("Choose action (1-4 or name): ").strip().lower()
 
-            slow_print(lore("For a moment, you see countless versions of yourself."))
-            slow_print("Some wounded. Some stronger. Some… dead.")
-
-            slow_print(danger("They all turn and look at you at the same time."))
+        # =========================
+        # OBSERVE
+        # =========================
+        if action in ["1", "observe"]:
+            slow_print("You focus on your surroundings...")
+            slow_print(lore("You see countless versions of yourself."))
+            slow_print(danger("They all turn and stare at you."))
             slow_print("Then they vanish.")
 
-        elif action == "call":
-            slow_print("You call out into the emptiness...")
+        # =========================
+        # CALL
+        # =========================
+        elif action in ["2", "call", "call out"]:
+            slow_print("You call into the Void...")
+            slow_print(danger("\"...hero...error...zero...\""))
+            slow_print(lore("The Void is learning you."))
 
-            slow_print(danger("Your voice echoes back—distorted."))
-            slow_print("\"...hero...error...zero...\"")
+        # =========================
+        # ADVANCE (BOSS)
+        # =========================
+        elif action in ["3", "advance"]:
+            from voidDungeon import enter_void_dungeon
+            result = enter_void_dungeon(hero, place)
 
-            slow_print(lore("The Void does not understand you… but it is learning."))
-
-        elif action == "advance":
-            slow_print("You force yourself forward.")
-            slow_print(danger("Each step feels heavier, like reality is resisting you."))
-
-            slow_print("")
-            slow_print(highlight("A shape begins to form ahead..."))
-
-            slow_print(lore("It twists, pulling pieces of the world into itself."))
-            slow_print("Eyes. Limbs. Shadows. Time itself.")
-
-            slow_print("")
-            slow_print(danger("The Horror sees you."))
-
-            # Boss encounter
-            enemy = combat.create_enemy("Cuthulu")
-            result = combat.display_enemy(enemy, hero)
+        # =========================
+        # RESULT HANDLING (FIXED)
+        # =========================
 
             if result == "dead":
-                return
+                return  # player died → exit immediately
+
+            elif result in ["run", "escape", "flee", None]:
+                slow_print(danger("You escape... but the Horror remains."))
+                continue  # back to menu, no victory
+
+            elif result == "win":
+                hero.flags["void_boss_defeated"] = True
+
+                # Victory sequence
+                slow_print("")
+                slow_print(highlight("=== VICTORY ==="))
+
+                slow_print(lore("The Void convulses violently."))
+                slow_print(danger("The Horror collapses inward."))
+
+                slow_print("")
+                slow_print(lore("The time bubble shatters."))
+
+                slow_print("Henrik falls to the ground, gasping.")
+                slow_print(f"{name('Henrik')}: \"I thought... I was gone...\"")
+
+                slow_print("")
+                slow_print(f"{name('Henrik')} looks at you, shaken.")
+                slow_print(f"{name('Henrik')}: \"That thing... it's not truly dead.\"")
+
+                slow_print("")
+                slow_print(danger("The Void still watches."))
+
             else:
-                slow_print(danger("The Void trembles… but it is not gone."))
-                slow_print(lore("You have only scratched the surface of something far worse."))
-
-        elif action == "exit":
-            slow_print("You step back… or perhaps the Void lets you leave.")
-            slow_print(lore("The world slowly reforms around you."))
-
-            slow_print(danger("But something followed you… you can feel it."))
+                # fallback safety (in case combat returns something unexpected)
+                slow_print(danger("The outcome is unclear... the Horror still exists."))
+                continue
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit"]:
+            slow_print("You step away from the Void.")
+            slow_print(lore("Reality slowly stabilizes around you."))
             break
 
         else:
-            slow_print("That is not a valid action.")
+            slow_print(danger("Invalid action."))

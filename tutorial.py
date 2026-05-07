@@ -109,7 +109,7 @@ def doom(hero):
 
     slow_print("Your breath catches in your throat.")
 
-    slow_print("A massive beam of blinding light is erupting from the cathedral, piercing straight into the sky.")
+    slow_print("A massive beam of blinding light erupts from the cathedral, piercing straight into the sky.")
     slow_print("The clouds above twist and churn unnaturally around it.")
 
     slow_print("The air feels... wrong.")
@@ -122,33 +122,38 @@ def doom(hero):
     slow_print("Too many limbs.")
     slow_print("It doesn't make sense to look at.")
 
-    slow_print("A dark beam flies past you and explodes the center of town")
+    slow_print("A dark beam flies past you and explodes in the center of town.")
 
     slow_print("Buildings crumble like paper.")
-    slow_print("The Knights of the Covenant clash against it but they are nothing to a beast like this.")
+    slow_print("The Knights of the Covenant clash against it, but they are nothing to a beast like this.")
 
     slow_print("You hear Henrik shouting somewhere in the chaos.")
 
-    slow_print("You see the creature charging up")
+    slow_print("You see the creature charging up.")
 
     if "silver pendent" in hero.inventory:
-        slow_print("Henrik runs to you and grabs the pendent off your neck.")
+        slow_print("Henrik runs to you and grabs the pendant from around your neck.")
     else:
-        slow_print("Henrik pulls a silver pendent out")
+        slow_print("Henrik pulls out a silver pendant.")
 
     slow_print("He pulls out a spell book you've never seen before and starts chanting.")
-    slow_print("The pendent glows and opens into a small seed.")
-    slow_print("Before you have time to process whats happening the seed grows at an exorbitant rate.")
-    slow_print("The tree takes root but before the the spell is finished the monster unleashes it's hyper beam.")
-    slow_print("It pierces the tree, knocks henrik into you and throws both of you into a pile of rubble.")
-    slow_print("Through blurred vision you see Henrik get up and stumble back to the tree.")
-    slow_print("The Knights of the Covenant lunch a balista into the Beast stunning it.")
-    slow_print("Henrik finishes his spell and a flash of light expands out of the tree.")
-    slow_print("The Beast falls to the ground and with one final quake your vision goes black")
+    slow_print("The pendant glows and opens into a small seed.")
+    slow_print("Before you have time to process what's happening, the seed grows at an exorbitant rate.")
+
+    slow_print("The tree takes root, but before the spell is finished, the monster unleashes its hyper beam.")
+    slow_print("It pierces the tree, knocks Henrik into you, and throws both of you into a pile of rubble.")
+
+    slow_print("Through blurred vision, you see Henrik get up and stumble back toward the tree.")
+
+    slow_print("The Knights of the Covenant launch a ballista into the beast, stunning it.")
+
+    slow_print("Henrik finishes his spell, and a flash of light erupts from the tree.")
+
+    slow_print("The beast falls to the ground, and with one final quake, your vision goes black.")
+
     slow_print("...")
-    
+
     ForestIntro(hero)
-        
 
 
 # -----------------------

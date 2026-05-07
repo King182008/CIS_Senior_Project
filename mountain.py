@@ -1,4 +1,4 @@
-from utils import slow_print, danger, lore, highlight
+from utils import slow_print, danger, lore, highlight, name
 
 
 # =========================
@@ -53,9 +53,20 @@ def mountainInteract(hero, place):
         hero.flags["mountain_intro_seen"] = True
 
     while True:
-        action = input("What would you like to do? (Observe, Climb, Exit): ").lower()
+        print(highlight("\n=== MOUNTAIN INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Observe the Rift')}")
+        print(f"2. {name('Climb Higher')}")
+        print(f"3. {name('Lore')}")
+        print(f"4. {danger('Leave Mountains')}")
+        print("-" * 40)
 
-        if action == "observe":
+        action = input(highlight("Choose an action (1-4 or name): ")).strip().lower()
+
+        # =========================
+        # OBSERVE
+        # =========================
+        if action in ["1", "observe", "rift"]:
             slow_print("You focus on your surroundings...")
             slow_print("For a split second, everything freezes.")
 
@@ -63,7 +74,10 @@ def mountainInteract(hero, place):
 
             slow_print(lore("You feel a pressure in your head… like time is trying to rewrite you."))
 
-        elif action == "climb":
+        # =========================
+        # CLIMB
+        # =========================
+        elif action in ["2", "climb", "higher"]:
             slow_print("You begin climbing higher into the mountains...")
             slow_print("The path shifts beneath your feet—stones appear where none existed.")
 
@@ -77,7 +91,7 @@ def mountainInteract(hero, place):
             slow_print(highlight("You reach a small cabin hidden in the mountains."))
 
             slow_print("Inside, dust hangs motionless in the air.")
-            slow_print("On a table rests a worn diary, marked only with the initial " + highlight("H") + ".")
+            slow_print(f"On a table rests a worn diary, marked only with the initial {highlight('H')}.")
 
             slow_print(lore("The pages are filled with frantic, uneven writing—like someone running out of time."))
 
@@ -86,25 +100,35 @@ def mountainInteract(hero, place):
 
             slow_print("")
             slow_print("You can barely make out a single idea:")
-
             slow_print(highlight("The Void."))
 
             slow_print("")
             slow_print("Further in the diary is a crude drawing:")
 
             slow_print(lore("A tree at the center... surrounded by five symbols:"))
-            slow_print("- A Leaf")
-            slow_print("- A Mountain")
-            slow_print("- A Dead Tree")
-            slow_print("- A Pyramid")
-            slow_print("- Fire encircling the center")
+            slow_print(f"- {name('A Leaf')}")
+            slow_print(f"- {name('A Mountain')}")
+            slow_print(f"- {name('A Dead Tree')}")
+            slow_print(f"- {name('A Pyramid')}")
+            slow_print(f"- {name('Fire encircling the center')}")
 
             slow_print(danger("At the center of it all... something labeled only as 'The Horror'."))
 
-        elif action == "exit":
-            slow_print("You descend carefully, leaving the unstable time currents behind.")
-            slow_print(lore("The world begins to feel normal again… but not entirely."))
+        # =========================
+        # LORE
+        # =========================
+        elif action in ["3", "lore"]:
+            show_mountain_lore()
+
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit", "leave"]:
+            if not hero.flags.get("mountain_outro_seen", False):
+                slow_print("You descend carefully, leaving the unstable time currents behind.")
+                slow_print(lore("The world begins to feel normal again… but not entirely."))
+                hero.flags["mountain_outro_seen"] = True
             break
 
         else:
-            slow_print("That is not a valid action.")
+            slow_print(danger("Invalid choice. Please select 1–4."))

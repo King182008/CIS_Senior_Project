@@ -1,5 +1,5 @@
 from utils import slow_print, danger, lore, highlight, name
-
+from dungeon import enter_desert_dungeon
 import combat
 
 
@@ -64,16 +64,27 @@ def desertInteract(hero, place):
     if not hero.flags.get("desert_interact_seen", False):
         slow_print("You stand before the staircase once more.")
         slow_print("It descends far below the desert, swallowed by darkness.")
-        slow_print(f"A faint, murky aura {danger('leaks')} from its depths... pulsing slowly.")
-        slow_print("")
+        slow_print(f"A faint, murky aura {danger('leaks')} from its depths... pulsing slowly.\n")
 
         show_desert_lore()
         hero.flags["desert_interact_seen"] = True
 
     while True:
-        action = input("What would you like to do (Descend or Exit): ").strip().lower()
+        print(highlight("\n=== DESERT INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Descend the staircase')}")
+        print(f"2. {name('Study the ruins')}")
+        print(f"3. {name('Listen to the wind')}")
+        print(f"4. {danger('Leave area')}")
+        print("-" * 40)
 
-        if action == "descend":
+        action = input(highlight("Choose (1–4 or name): ")).strip().lower()
+
+        # =========================
+        # DESCEND
+        # =========================
+        if action in ["1", "descend"]:
+
             if "Goblin Tooth" in hero.inventory:
                 slow_print("You step past the goblins. They scatter, unwilling to follow.")
                 slow_print("As you descend, the heat fades... replaced by something far worse.")
@@ -81,17 +92,40 @@ def desertInteract(hero, place):
                 slow_print("Each step echoes longer than it should.")
                 slow_print(danger("It feels like the staircase is stretching beneath your feet."))
 
-                slow_print(highlight("You descend into the Desert Dungeon... (Feature Not Added Yet)"))
-                break
+                slow_print(highlight("You descend into the Desert Dungeon ..."))
+                hero.currentPlace = "desert_dungeon"
+                enter_desert_dungeon(hero, place)
+
             else:
                 slow_print("The goblins hiss and block your path.")
                 slow_print(f"You must prove your strength before entering. ({name('Goblin Tooth')} required)")
                 break
 
-        elif action == "exit":
+        # =========================
+        # STUDY RUINS (lore option)
+        # =========================
+        elif action in ["2", "study", "ruins"]:
+            slow_print("You walk among the broken structures.")
+            slow_print("The stone is strangely smooth... as if time itself wore it down.")
+            slow_print("You feel like you're walking through centuries in silence.")
+            show_desert_lore()
+
+        # =========================
+        # LISTEN
+        # =========================
+        elif action in ["3", "listen", "wind"]:
+            slow_print("You close your eyes and listen to the desert wind...")
+            slow_print("It carries faint whispers that almost sound like voices.")
+            slow_print(danger("But they are not speaking a language you understand."))
+            slow_print("Or perhaps... they are speaking from another time entirely.")
+
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit", "leave"]:
             slow_print("You step away from the staircase.")
             slow_print(danger("For a moment... you swear something below was watching you leave."))
             break
 
         else:
-            slow_print("Invalid action.")
+            slow_print(danger("Invalid choice. Please select 1–4."))

@@ -53,30 +53,43 @@ def swampInteract(hero, place):
         slow_print(lore("As if whatever rests here is being preserved... or protected."))
 
         slow_print("You feel a quiet intelligence behind it.")
-        slow_print(danger("Something ancient. Something patient."))
+        slow_print(danger("Something ancient. Something patient.\n"))
 
         hero.flags["swamp_interact_seen"] = True
 
     while True:
-        action = input("What would you like to do? (Inspect or Exit): ").strip().lower()
+        print(highlight("\n=== SWAMP INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Inspect pedestal')}")
+        print(f"2. {name('Listen to the swamp')}")
+        print(f"3. {name('Recall lore')}")
+        print(f"4. {danger('Leave swamp')}")
+        print("-" * 40)
 
-        if action == "inspect":
+        action = input(highlight("Choose (1–4 or name): ")).strip().lower()
+
+        # =========================
+        # INSPECT (PUZZLE)
+        # =========================
+        if action in ["1", "inspect"]:
+
             slow_print("A letter and pen rest atop the pedestal.")
             slow_print(highlight("The Letter says:"))
-
             slow_print("No blood I shed, yet wars I lead,")
             slow_print("With silent moves, I plant the seed.")
             slow_print("Surrounded close, I must be kept")
             slow_print("If I fall, all hope has wept.")
             slow_print("Though slow I move, I'm worth it all")
-            slow_print("Who am I that cannot fall?")
+            slow_print("Who am I that cannot fall?\n")
 
-            answer = input("What is the answer? ").strip().lower()
             if hero.flags.get("rat_king_defeated", False):
                 slow_print("The pedestal is silent. Whatever was bound here is gone.")
                 continue
 
-            if answer in ["king", "a king"]:
+            answer = input("Your answer: ").strip().lower()
+
+            if answer in ["king", "a king", "rat king"]:
+
                 slow_print(f"As you write '{answer}', the ground trembles...")
                 slow_print(danger("Something claws its way to the surface."))
 
@@ -87,13 +100,40 @@ def swampInteract(hero, place):
                     hero.flags["rat_king_defeated"] = True
 
             else:
-                slow_print("Nothing happens...")
+                slow_print("Nothing happens... The swamp remains still.")
 
-        elif action == "exit":
+        # =========================
+        # ATMOSPHERE OPTION
+        # =========================
+        elif action in ["2", "listen"]:
+
+            slow_print("You listen closely to the swamp...")
+            slow_print("Bubbles rise slowly from the dark water.")
+            slow_print("Whispers drift without wind.")
+            slow_print(danger("It sounds almost like breathing."))
+            slow_print("But not yours.")
+
+        # =========================
+        # LORE
+        # =========================
+        elif action in ["3", "lore"]:
+
+            show_swamp_lore()
+
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit", "leave"]:
+
             slow_print("You step away from the pedestal.")
+            slow_print("The swamp seems to close in behind you.")
             break
 
+        # =========================
+        # SECRET / EASTER EGG
+        # =========================
         elif action == "witch":
+
             slow_print(danger("A mysterious figure appears from the mist..."))
             slow_print("Before you can react, everything goes dark.")
             slow_print(highlight("You have been suffocated by giant breasts."))
@@ -101,4 +141,4 @@ def swampInteract(hero, place):
             sys.exit()
 
         else:
-            slow_print("Invalid action.")
+            slow_print(danger("Invalid choice. Please select 1–4."))

@@ -1,27 +1,5 @@
 import time
 
-
-# =========================
-# Color System
-# =========================
-class Color:
-    RESET = "\033[0m"
-    GREEN = "\033[92m"
-    CYAN = "\033[96m"
-    MAGENTA = "\033[95m"
-    RED = "\033[91m"
-    YELLOW = "\033[93m"
-
-def c(text, color):
-    return f"{color}{text}{Color.RESET}"
-
-# Semantic helpers
-def name(text): return c(text, Color.CYAN)
-def npc(text): return c(text, Color.MAGENTA)
-def danger(text): return c(text, Color.RED)
-def lore(text): return c(text, Color.GREEN)
-def highlight(text): return c(text, Color.YELLOW)
-
 # =========================
 # Utility
 # =========================
@@ -31,58 +9,95 @@ def slow_print(text, delay=0.05):
         time.sleep(delay)
     print()
 
+
 # =========================
-# Actions Loop
+# COLOR SYSTEM
 # =========================
-def actions(hero, currentPlace):
-    import combat
-    import shop
-    import characterCreation
-    import inventory
+class Color:
+    RESET = "\033[0m"
+    GREEN = "\033[92m"
+    CYAN = "\033[96m"
+    MAGENTA = "\033[95m"
+    RED = "\033[91m"
+    YELLOW = "\033[93m"
+
+
+def c(text, color):
+    return f"{color}{text}{Color.RESET}"
+
+
+def name(text): return c(text, Color.CYAN)
+def npc(text): return c(text, Color.MAGENTA)
+def danger(text): return c(text, Color.RED)
+def lore(text): return c(text, Color.GREEN)
+def highlight(text): return c(text, Color.YELLOW)
+
+
+# =========================
+# MAIN ACTION LOOP
+# =========================
+def actions(hero):
+    import travel, shop, characterCreation, combat, inventory
+
     while True:
-        action = input(
-            f"\nWhat would you like to do? "
-            f"({highlight('Shop')}, {highlight('Travel')}, {highlight('Save')}, "
-            f"{highlight('Combat')}, {highlight('Interact')}, {highlight('Inventory')}, {highlight('Stop')}): "
-        ).strip().lower()
 
         if hero is None:
-            print("No character loaded. Exiting.")
+            print(danger("No character loaded. Exiting."))
             break
 
-        if action in ["shop", "1"]:
-            shop.display_shop(currentPlace, hero)
+        place = hero.currentPlace
 
-        elif action in ["travel", "2"]:
-            import travel  # ✅ local import avoids circular dependency
-            currentPlace = travel.travel(currentPlace, hero)
+        print(highlight("\n=== ACTION MENU ==="))
+        print(f"Location: {name(place.title())}")
+        print("-" * 40)
 
-        elif action in ["save", "3"]:
+        print(f"1. {highlight('Shop')}")
+        print(f"2. {highlight('Travel')}")
+        print(f"3. {highlight('Save')}")
+        print(f"4. {highlight('Combat')}")
+        print(f"5. {highlight('Inventory')}")
+        print(f"6. {highlight('Interact')}")
+        print(f"7. {danger('Stop')}")
+        print("-" * 40)
+
+        action = input("Choose action (1-7 or name): ").strip().lower()
+
+        # SHOP
+        if action in ["1", "shop"]:
+            shop.display_shop(place, hero)
+
+        # TRAVEL
+        elif action in ["2", "travel"]:
+            hero.currentPlace = travel.travel(place, hero)
+
+        # SAVE
+        elif action in ["3", "save"]:
+            print(highlight("\n=== SAVE GAME ==="))
+            characterCreation.show_slots()
             slot = characterCreation.choose_slot()
             hero.save_character(slot)
 
-        elif action in ["combat", "4"]:
+        # COMBAT
+        elif action in ["4", "combat"]:
+            enemies = combat.Enemies.get(place)
 
-            enemies = combat.Enemies.get(currentPlace, None)
-
-            if not enemies or len(enemies) == 0:
-                slow_print(lore(f"The {currentPlace} is quiet..."))
-                slow_print("There is nothing to fight here.")
-                slow_print("Try interacting with the area instead.")
+            if not enemies:
+                slow_print(lore(f"The {name(place)} is peaceful..."))
                 continue
 
-            enemy_type = enemies[0]
-            enemy = combat.create_enemy(enemy_type)
+            enemy = combat.create_enemy(enemies[0])
             result = combat.display_enemy(enemy, hero)
 
             if result == "dead":
                 characterCreation.delete_save(hero.slot)
                 break
 
-        elif action in ["inventory", "5"]:
+        # INVENTORY
+        elif action in ["5", "inventory"]:
             inventory.show_inventory(hero)
 
-        elif action in ["interact", "6"]:
+        # INTERACT
+        elif action in ["6", "interact"]:
             from forest import forestInteract
             from desert import desertInteract
             from swamp import swampInteract
@@ -99,43 +114,31 @@ def actions(hero, currentPlace):
                 "void": voidInteract
             }
 
-            key = currentPlace.strip().lower()
-
-            if key in INTERACTIONS:
-                INTERACTIONS[key](hero, currentPlace)
+            if place in INTERACTIONS:
+                INTERACTIONS[place](hero, place)
             else:
-                slow_print(f"No interaction defined for {danger(currentPlace)}.")
+                slow_print(danger(f"Nothing to interact with in {name(place)}."))
 
-        elif action == "stop":
-            print("Exiting game.")
+        # EXIT
+        elif action in ["7", "stop"]:
+            print(danger("Exiting game..."))
             break
 
         else:
-            print("Invalid action.")
+            print(danger("Invalid action."))
+
 
 # =========================
-# Quest Boards
+# QUEST SYSTEM
 # =========================
 forest_quest_board = {
-    "Rat Problem": {
-        "requirements": {"Rat Tail": 3},
-        "reward": {"gold": 10, "xp": 5}
-    },
-    "Goblin Threat": {
-        "requirements": {"Goblin Tooth": 2},
-        "reward": {"gold": 20, "xp": 10}
-    },
-    "Dragon Slayer": {
-        "requirements": {"Dragon Scale": 1},
-        "reward": {"gold": 100, "xp": 50}
-    }
+    "Rat Problem": {"requirements": {"Rat Tail": 3}, "reward": {"gold": 10, "xp": 5}},
+    "Goblin Threat": {"requirements": {"Goblin Tooth": 2}, "reward": {"gold": 20, "xp": 10}},
+    "Dragon Slayer": {"requirements": {"Dragon Scale": 1}, "reward": {"gold": 100, "xp": 50}}
 }
 
 swamp_quest_board = {
-    "Giant Rat Problem": {
-        "requirements": {"Rat King's Crown": 3},
-        "reward": {"gold": 10, "xp": 5}
-    }
+    "Giant Rat Problem": {"requirements": {"Rat King's Crown": 3}, "reward": {"gold": 10, "xp": 5}}
 }
 
 quest_boards = {
@@ -143,21 +146,22 @@ quest_boards = {
     "swamp": swamp_quest_board
 }
 
+
 # =========================
-# Quest Logic
+# QUEST HANDLER
 # =========================
-def handle_quest(hero, quest_name, currentPlace):
-    board = quest_boards[currentPlace]
+def handle_quest(hero, quest_name):
+    board = quest_boards[hero.currentPlace]
     quest = board[quest_name]
 
-    if hero.quest_log.get(quest_name, False):
-        slow_print(f"You already completed {name(quest_name)}.")
+    if hero.quest_log.get(quest_name):
+        slow_print(danger(f"Already completed {name(quest_name)}."))
         return
 
     # Check requirements
     for item, qty in quest["requirements"].items():
         if hero.inventory.get(item, {}).get("quantity", 0) < qty:
-            slow_print(f"You need {highlight(qty)}x {name(item)}.")
+            slow_print(f"{danger('Missing:')} {highlight(qty)}x {name(item)}")
             return
 
     # Remove items
@@ -171,28 +175,40 @@ def handle_quest(hero, quest_name, currentPlace):
     hero.xp += quest["reward"]["xp"]
     hero.quest_log[quest_name] = True
 
-    slow_print(f"{highlight('Quest Complete')}: {name(quest_name)}")
-    slow_print(f"+{highlight(quest['reward']['gold'])} gold, +{highlight(quest['reward']['xp'])} XP")
+    slow_print(highlight("=== QUEST COMPLETE ==="))
+    slow_print(name(quest_name))
+    slow_print(
+        f"{highlight('+')} {highlight(quest['reward']['gold'])} gold | "
+        f"{highlight(quest['reward']['xp'])} XP"
+    )
+
 
 # =========================
-# Quest Menu
+# QUEST MENU
 # =========================
-def quest_board_menu(hero, currentPlace):
+def quest_board_menu(hero):
     while True:
-        print(f"\n{highlight('--- Quest Board ---')}")
+        place = hero.currentPlace
+        board = quest_boards[place]
 
-        board = quest_boards[currentPlace]
+        print(highlight(f"\n=== {place.upper()} QUEST BOARD ==="))
+        print("-" * 40)
 
-        for q_name, quest in board.items():
-            status = highlight("Complete") if hero.quest_log.get(q_name, False) else "Incomplete"
-            print(f"- {name(q_name)} ({status})")
+        for q_name in board:
+            complete = hero.quest_log.get(q_name, False)
+            status = highlight("✔ Complete") if complete else danger("✘ Incomplete")
+            print(f"{name(q_name):<25} {status}")
 
-        choice = input("\nSelect quest or type 'exit': ").title()
+        print("-" * 40)
 
-        if choice == "Exit":
+        choice = input(f"Select quest or {danger('exit')}:\n>> ").strip().lower()
+
+        if choice.lower() == "exit":
             break
 
-        if choice in board:
-            handle_quest(hero, choice, currentPlace)
+        normalized_choice = choice.title()
+
+        if normalized_choice in board:
+            handle_quest(hero, normalized_choice)
         else:
-            slow_print("Invalid quest.")
+            slow_print(danger("Invalid quest."))

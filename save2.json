@@ -1,83 +1,148 @@
 {
-    "name": "Zaam",
-    "level": 5,
-    "health": 230,
-    "mana": 50,
-    "strength": 2,
-    "intelligence": 1,
-    "agility": 0,
-    "xp": 75,
-    "xp_to_next_level": 1250,
-    "gold": 750,
-    "weapon": null,
+    "name": "Xorsha",
+    "level": 4,
+    "health": 382,
+    "mana": 980,
+    "strength": 6,
+    "intelligence": 6,
+    "agility": 3,
+    "xp": 695,
+    "xp_to_next_level": 800,
+    "gold": 1025,
+    "weapon": {
+        "type": "weapon",
+        "name": "Great Sword",
+        "price": 50,
+        "quantity": 1,
+        "damage": 10,
+        "mana_gain": 5
+    },
+    "currentPlace": "forest",
     "inventory": {
-        "Locust Wing": {
-            "quantity": 2,
-            "item": {
-                "type": "item",
-                "name": "Locust Wing"
-            }
-        },
-        "Poison Staff": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Poison Staff"
-            }
-        },
         "Rat Tail": {
-            "quantity": 100,
+            "quantity": 225,
             "item": {
                 "type": "item",
                 "name": "Rat Tail"
             }
         },
-        "Great Sword": {
+        "Staff": {
             "quantity": 1,
             "item": {
-                "type": "item",
-                "name": "Great Sword"
+                "type": "weapon",
+                "name": "Staff",
+                "price": 30,
+                "quantity": 1,
+                "damage": 3,
+                "mana_gain": 7
             }
         },
         "Troll Hide": {
-            "quantity": 1,
+            "quantity": 2,
             "item": {
                 "type": "item",
                 "name": "Troll Hide"
             }
         },
+        "Wooden Sword": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Wooden Sword",
+                "price": 0,
+                "quantity": 1,
+                "damage": 5,
+                "mana_gain": 5
+            }
+        },
         "Goblin Tooth": {
-            "quantity": 2,
+            "quantity": 17,
             "item": {
                 "type": "item",
                 "name": "Goblin Tooth"
             }
         },
-        "Dragon Scale": {
-            "quantity": 3,
+        "Poison Staff": {
+            "quantity": 1,
             "item": {
-                "type": "item",
-                "name": "Dragon Scale"
+                "type": "weapon",
+                "name": "Poison Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 7,
+                "mana_gain": 10
             }
         },
-        "Excalibur": {
+        "Greater Health Potion": {
             "quantity": 1,
             "item": {
                 "type": "item",
-                "name": "Excalibur"
+                "name": "Greater Health Potion",
+                "price": 50,
+                "quantity": 1
+            }
+        },
+        "Greater Mana Potion": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Greater Mana Potion",
+                "price": 50,
+                "quantity": 1
+            }
+        },
+        "Locust Wing": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Locust Wing"
+            }
+        },
+        "Health Potion": {
+            "quantity": 2,
+            "item": {
+                "type": "item",
+                "name": "Health Potion",
+                "price": 25,
+                "quantity": 1
+            }
+        },
+        "Mana Potion": {
+            "quantity": 2,
+            "item": {
+                "type": "item",
+                "name": "Mana Potion",
+                "price": 25,
+                "quantity": 1
+            }
+        },
+        "Water Staff": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Water Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 5,
+                "mana_gain": 8
             }
         }
     },
     "quest_log": {
-        "Rat Problem": true,
-        "Dragon Slayer": true
+        "Get Bread": "Complete",
+        "Rat Problem": true
     },
     "flags": {
+        "extra_turn": false,
         "forest_intro_seen": true,
         "forest_outro_seen": true,
+        "mountain_intro_seen": true,
+        "desert_intro_seen": true,
+        "desert_interact_seen": true,
+        "swamp_intro_seen": true,
         "swamp_interact_seen": true,
-        "rat_king_defeated": true,
+        "mountain_outro_seen": true,
         "volcano_intro_seen": true,
-        "mountain_intro_seen": true
+        "volcano_outro_seen": true
     }
 }

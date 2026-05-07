@@ -1,4 +1,11 @@
-from utils import slow_print, danger, lore, highlight
+from utils import (
+    slow_print,
+    danger,
+    lore,
+    highlight,
+    name,
+    actions
+)
 import combat
 
 
@@ -10,7 +17,7 @@ def show_volcano_lore():
     slow_print("Once, Dragons were guardians of balance—keepers of fire and renewal.")
     slow_print(f"After the {danger('Great Blast')}, they were twisted into beings of pure destruction.")
     slow_print(danger("Now they hoard flame, rage, and ruin."))
-    slow_print(f"At the heart of the volcano lies their strongest—an {lore('ancient Dragon')}.")
+    slow_print(f"At the heart of the volcano lies their strongest—an {lore('Ancient Dragon')}.")
     slow_print(danger("You feel its presence watching you."))
 
 
@@ -18,29 +25,19 @@ def show_volcano_lore():
 # Intro
 # =========================
 def volcanoIntro(hero):
+    slow_print("... ... ...")
+    slow_print("The air thickens.")
+    slow_print("Heat presses against your skin like a warning.")
 
-    if hero.flags.get("volcano_intro_seen", False):
-        return
+    slow_print(f"You approach a mountain split open by the {danger('Great Blast')}.")
+    slow_print("Molten light spills from its core, pulsing like a heartbeat.")
 
-    slow_print("The air grows unbearably hot as you approach the mountain’s peak.")
-    slow_print(danger("The ground cracks beneath your feet, glowing with molten light."))
+    slow_print(danger("A roar echoes from above—deep, ancient, alive."))
 
-    slow_print("Smoke chokes the sky, turning it a deep crimson.")
-    slow_print("")
-
-    slow_print(danger("A distant roar shakes the earth itself."))
-    slow_print("Not thunder… something alive.")
-
-    slow_print("")
-    slow_print("Rivers of lava carve through the land like veins of fire.")
-
-    slow_print(danger("You feel it immediately—this place is claimed."))
-
-    slow_print(highlight("This is the domain of the Dragons."))
+    slow_print("This is no natural place.")
+    slow_print(highlight("This is Dragon territory."))
 
     show_volcano_lore()
-
-    hero.flags["volcano_intro_seen"] = True
 
 
 # =========================
@@ -48,27 +45,46 @@ def volcanoIntro(hero):
 # =========================
 def volcanoInteract(hero, place):
     if not hero.flags.get("volcano_intro_seen", False):
-        slow_print("You step onto scorched stone, heat radiating from every direction.")
-        slow_print(danger("The ground trembles beneath you, as if something massive moves below."))
+        slow_print("You step onto blackened stone, heat radiating in waves.")
+        slow_print("Cracks glow beneath your feet, filled with slow-moving lava.")
+        slow_print("The sky burns red through thick smoke.")
+        slow_print("")
+
+        slow_print("Massive bones lie scattered across the terrain.")
+        slow_print(danger("Nothing survives here for long."))
 
         slow_print("")
-        slow_print("Charred bones litter the area—remains of creatures that came too close.")
-        slow_print(danger("Even the air feels hostile, burning your lungs with every breath."))
-        slow_print("")
+        slow_print("High above, shadows circle through the smoke.")
+        slow_print(danger("You are not alone."))
 
         show_volcano_lore()
         hero.flags["volcano_intro_seen"] = True
 
     while True:
-        action = input("What would you like to do? (Explore, Challenge, Lore, Exit): ").lower()
+        print(highlight("\n=== VOLCANO INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Explore the Volcano')}")
+        print(f"2. {name('Challenge a Dragon')}")
+        print(f"3. {name('Lore')}")
+        print(f"4. {danger('Exit Volcano')}")
+        print("-" * 40)
 
-        if action == "explore":
+        action = input(highlight("Choose an action (1-4 or name): ")).strip().lower()
+
+        # =========================
+        # EXPLORE
+        # =========================
+        if action in ["1", "explore"]:
             slow_print("You move carefully across unstable ground...")
-            slow_print(danger("Lava bubbles nearby, occasionally bursting with violent force."))
-            slow_print("You find massive claw marks etched into stone.")
+            slow_print(danger("Lava bubbles and bursts nearby."))
+
+            slow_print("You discover deep claw marks carved into stone.")
             slow_print(danger("Whatever made them… is enormous."))
 
-        elif action == "challenge":
+        # =========================
+        # CHALLENGE
+        # =========================
+        elif action in ["2", "challenge", "dragon"]:
             slow_print("The air suddenly goes still...")
 
             if "Dragon Scale" in hero.inventory:
@@ -90,12 +106,22 @@ def volcanoInteract(hero, place):
             else:
                 slow_print("The Dragon retreats into the flames, wounded but not defeated.")
 
-        elif action == "lore":
+        # =========================
+        # LORE
+        # =========================
+        elif action in ["3", "lore"]:
             show_volcano_lore()
 
-        elif action == "exit":
-            slow_print("You retreat from the volcano, the heat slowly fading behind you.")
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit"]:
+            if not hero.flags.get("volcano_outro_seen", False):
+                slow_print("You turn away from the burning mountain.")
+                slow_print("The heat fades slightly with each step.")
+                slow_print(danger("But the roar of Dragons follows you..."))
+                hero.flags["volcano_outro_seen"] = True
             break
 
         else:
-            slow_print("That is not a valid action.")
+            slow_print(danger("Invalid choice. Please select 1–4."))

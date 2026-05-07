@@ -47,25 +47,44 @@ def forestInteract(hero, place):
         slow_print("Elves move gracefully between platforms, watching you with quiet curiosity.")
         slow_print("Beyond the clearing, a dense forest stretches endlessly, dark and whispering.")
         slow_print("You feel it… something in the woods is watching.")
-        slow_print(f"The Head Elf, {npc('Galadriel')}, stands nearby.")
-        slow_print("")
+        slow_print(f"The Head Elf, {npc('Galadriel')}, stands nearby.\n")
 
         show_forest_lore()
         hero.flags["forest_intro_seen"] = True
 
     while True:
-        action = input("What would you like to do (Talk, Quest, Lore, Exit): ").lower()
+        print(highlight("\n=== FOREST INTERACTION ==="))
+        print("-" * 40)
+        print(f"1. {name('Talk to Galadriel')}")
+        print(f"2. {name('Quest Board')}")
+        print(f"3. {name('Lore')}")
+        print(f"4. {danger('Exit Forest')}")
+        print("-" * 40)
 
-        if action in ["talk", "1"]:
+        action = input(highlight("Choose an action (1-4 or name): ")).strip().lower()
+
+        # =========================
+        # TALK
+        # =========================
+        if action in ["1", "talk", "galadriel"]:
             talkToGaladriel(hero)
 
-        elif action in ["quest", "2"]:
-            quest_board_menu(hero, place)  # FIXED
+        # =========================
+        # QUESTS
+        # =========================
+        elif action in ["2", "quest"]:
+            quest_board_menu(hero)
 
-        elif action in ["lore", "3"]:
+        # =========================
+        # LORE
+        # =========================
+        elif action in ["3", "lore"]:
             show_forest_lore()
 
-        elif action == "exit":
+        # =========================
+        # EXIT
+        # =========================
+        elif action in ["4", "exit"]:
             if not hero.flags.get("forest_outro_seen", False):
                 slow_print("You step away from the Heartroot clearing.")
                 slow_print("The air grows colder as the sounds of the Elves fade behind you.")
@@ -74,42 +93,58 @@ def forestInteract(hero, place):
             break
 
         else:
-            slow_print("That is not a valid action.")
-
-
+            slow_print(danger("Invalid choice. Please select 1–4."))
 # =========================
 # Dialogue
 # =========================
 def talkToGaladriel(hero):
     slow_print(f"You approach {npc('Galadriel')}. Her gaze is calm, but ancient.")
-    slow_print("")
     slow_print("\"You have many questions,\" she says softly.")
-    slow_print("\"And little time to ask them.\"")
-    slow_print("")
+    slow_print("\"And little time to ask them.\"\n")
 
     while True:
-        choice = input("Ask about (Tree, Blast, Dragons, Leave): ").lower()
+        print(highlight("\n=== GALADRIEL DIALOGUE ==="))
+        print("-" * 40)
+        print(f"1. {name('Ask about the Heartroot')}")
+        print(f"2. {name('Ask about the Great Blast')}")
+        print(f"3. {name('Ask about the Dragons')}")
+        print(f"4. {danger('Leave conversation')}")
+        print("-" * 40)
 
-        if choice == "tree":
+        choice = input(highlight("Choose (1–4 or name): ")).strip().lower()
+
+        # =========================
+        # HEARTROOT
+        # =========================
+        if choice in ["1", "tree", "heartroot"]:
             slow_print(f"\"The {lore('Heartroot')} is older than memory,\" Galadriel explains.")
             slow_print("\"It binds the flow of time itself.\"")
             slow_print("\"But its power wanes. Something drains it from the shadows.\"")
 
-        elif choice == "blast":
+        # =========================
+        # GREAT BLAST
+        # =========================
+        elif choice in ["2", "blast", "great blast"]:
             slow_print(f"\"The {danger('Great Blast')} was no accident,\" she says grimly.")
             slow_print(f"\"It was the birth cry of the {npc('Horror')}\"")
             slow_print("\"Your village stood at the epicenter.\"")
             slow_print("\"That is why you alone were preserved.\"")
 
-        elif choice == "dragons":
+        # =========================
+        # DRAGONS
+        # =========================
+        elif choice in ["3", "dragons"]:
             slow_print(f"\"The {danger('Dragons')} were once guardians,\" Galadriel says.")
             slow_print("\"But the Blast twisted them.\"")
             slow_print("\"Now they rage endlessly, drawn to destruction.\"")
 
-        elif choice == "leave":
+        # =========================
+        # EXIT
+        # =========================
+        elif choice in ["4", "leave", "exit"]:
             slow_print("\"Go then, hero,\" Galadriel says.")
             slow_print("\"Return if you seek guidance… or if you still draw breath.\"")
             break
 
         else:
-            slow_print("Galadriel tilts her head slightly, not understanding your question.")
+            slow_print(danger("Galadriel does not understand your question."))

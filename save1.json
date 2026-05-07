@@ -1,22 +1,69 @@
 {
-    "name": "choncky boi",
-    "level": 1,
-    "health": 100,
-    "mana": 50,
-    "strength": 0,
-    "intelligence": 0,
-    "agility": 0,
-    "xp": 0,
-    "xp_to_next_level": 50,
-    "gold": 5,
+    "name": "Jinx",
+    "level": 4,
+    "health": 610,
+    "mana": 350,
+    "strength": 6,
+    "intelligence": 6,
+    "agility": 3,
+    "xp": 675,
+    "xp_to_next_level": 800,
+    "gold": 1040,
     "weapon": {
         "type": "weapon",
-        "name": "Wooden Sword",
-        "price": 0,
+        "name": "Great Sword",
+        "price": 50,
         "quantity": 1,
-        "damage": 5
+        "damage": 10,
+        "mana_gain": 5
     },
-    "inventory": {},
-    "quest_log": {},
-    "flags": {}
+    "currentPlace": "forest",
+    "inventory": {
+        "Rat Tail": {
+            "quantity": 169,
+            "item": {
+                "type": "item",
+                "name": "Rat Tail"
+            }
+        },
+        "Goblin Tooth": {
+            "quantity": 8,
+            "item": {
+                "type": "item",
+                "name": "Goblin Tooth"
+            }
+        },
+        "Troll Hide": {
+            "quantity": 4,
+            "item": {
+                "type": "item",
+                "name": "Troll Hide"
+            }
+        },
+        "Wooden Sword": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Wooden Sword",
+                "price": 0,
+                "quantity": 1,
+                "damage": 5,
+                "mana_gain": 5
+            }
+        }
+    },
+    "quest_log": {
+        "Get Bread": "Complete",
+        "Rat Problem": true,
+        "Goblin Threat": true,
+        "Dragon Slayer": true
+    },
+    "flags": {
+        "forest_intro_seen": true,
+        "forest_outro_seen": true,
+        "desert_intro_seen": true,
+        "desert_interact_seen": true,
+        "mountain_intro_seen": true,
+        "mountain_outro_seen": true
+    }
 }

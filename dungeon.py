@@ -56,7 +56,7 @@ def dungeon_loop(hero, place):
             inspect_area(hero)
 
         elif action in ["3", "inventory"]:
-            show_inventory(hero)
+            inventory(hero)
 
         elif ritual_option and action in [ritual_option, "ritual"]:
             ritual_room(hero)
@@ -253,15 +253,9 @@ def inspect_area(hero):
 # =========================
 # INVENTORY
 # =========================
-def show_inventory(hero):
-    if not hero.inventory:
-        slow_print("You carry nothing.")
-        return
-
-    items = ", ".join(
-        f"{k} x{v['quantity']}" for k, v in hero.inventory.items()
-    )
-    slow_print(f"You carry: {items}")
+def inventory(hero):
+    from inventory import show_inventory
+    show_inventory(hero)
 
 
 # =========================

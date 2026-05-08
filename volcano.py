@@ -57,7 +57,6 @@ def volcanoInteract(hero, place):
         slow_print("High above, shadows circle through the smoke.")
         slow_print(danger("You are not alone."))
 
-        show_volcano_lore()
         hero.flags["volcano_intro_seen"] = True
 
     while True:

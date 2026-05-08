@@ -34,7 +34,7 @@ def tutorial_combat(enemy, hero):
 
     # Step 1: Attack
     while enemy.health > 45:
-        action = input("Do you want to (Attack or 1)?").strip().lower()
+        action = input("Do you want to (Attack or 1)? ").strip().lower()
 
         if action in ["attack", "1"]:
             damage = get_attack_damage(hero)
@@ -278,7 +278,7 @@ def intro(hero):
     slow_print("He says, 'Hey! Your finally awake! I've been waiting, your dad said we could sword fight before our acension tomorrow!'")
     slow_print("He grabs your arm and drags you to the training grounds where you see a group of soilders known as the Covenant of Universal Light & Truth.")
     slow_print("The Knights of the Covenant are the protectors of the realm and are imbued with magic powers during their acension.")
-    slow_print("Henrik says, 'I know your nervous about the acension tomorrow but don't worry, Lets bursh up on the basics.'")
+    slow_print("Henrik says, 'I know your nervous about the acension tomorrow but don't worry, Lets brush up on the basics.'")
 
     slow_print("Henrik says, 'Lets start with the basic attack(Press 1 or type attack)'")
     tutorial_combat(Henrik, hero)

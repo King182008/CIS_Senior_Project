@@ -9,6 +9,7 @@ from inventory import add_item
 # =========================
 def enter_desert_dungeon(hero, place):
     place = "desert_dungeon"
+    hero.currentPlace = "desert_dungeon"
 
     slow_print(highlight("\n=== DESERT DUNGEON ==="))
     slow_print("The staircase ends beneath the ruins.")
@@ -62,8 +63,11 @@ def dungeon_loop(hero, place):
             ritual_room(hero)
 
         elif action in [str(option_index), "escape"]:
-            attempt_escape(hero, place)
-            return  # exit loop cleanly
+
+            escaped = attempt_escape(hero, place)
+
+            if escaped:
+                return
 
         else:
             slow_print(danger("Invalid choice."))
@@ -112,62 +116,110 @@ def ritual_room(hero):
 
     inv = hero.inventory
 
-    def has(item):
-        return item in inv and inv[item]["quantity"] > 0
+    sacrifices = {
+        "Ancient Coin": ("gold", 25),
+        "Cracked Relic": ("strength", 1),
+        "Time Shard": ("heal", 20),
+        "Void Shard": ("intelligence", 1)
+    }
 
-    # ================= CORE RITUAL =================
-    required_items = [
-    "Ancient Coin",
-    "Cracked Relic",
-    "Time Shard",
-    "Core of Time",
-    "Rat King's Crown" 
-]
-    
-    if all(has(i) for i in required_items):
-        slow_print(highlight("The altar begins to resonate with every relic you carry..."))
-        slow_print(danger("Time shatters completely."))
+    required = [
+        "Ancient Coin",
+        "Cracked Relic",
+        "Time Shard",
+        "Core of Time",
+        "Rat King's Crown"
+    ]
 
-        # Grant combat ability
-        hero.flags["extra_turn"] = True
+    valid = [
+        item for item in sacrifices
+        if item in inv and inv[item]["quantity"] > 0
+    ]
 
-        # Remove items
-        for item in required_items:
-            inv[item]["quantity"] -= 1
-            if inv[item]["quantity"] <= 0:
-                del inv[item]
-
-        slow_print(highlight("You bend time itself. You will now act twice in battle."))
-
+    if not valid:
+        slow_print(danger("You have nothing the altar accepts."))
         return
 
-    # ================= MINOR =================
-    elif has("Time Shard"):
-        heal = 25
-        hero.health = hero.health + heal
-        slow_print(f"+{heal} HP")
+    # =========================
+    # FULL RITUAL
+    # =========================
+    if all(item in inv and inv[item]["quantity"] > 0 for item in required):
 
-        inv["Time Shard"]["quantity"] -= 1
-        if inv["Time Shard"]["quantity"] <= 0:
-            del inv["Time Shard"]
+        slow_print(highlight("The relics resonate together..."))
+        slow_print(danger("Time bends to your will."))
 
-    elif has("Cracked Relic"):
-        slow_print("Your cracked relics hum on the alter and fade into fragments of time disapering slowly")
-        if random.random() < 0.5:
-            hero.strength += 2
-            slow_print(highlight("+2 Strength"))
-        else:
-            hero.health -= 10
-            slow_print(danger("-10 HP"))
+        hero.flags["extra_turn"] = True
 
-        inv["Cracked Relic"]["quantity"] -= 1
-        if inv["Cracked Relic"]["quantity"] <= 0:
-            del inv["Cracked Relic"]
+        for item in required:
 
-    else:
-        slow_print("Nothing happens.")
+            qty = inv[item]["quantity"]
 
+            slow_print(danger(f"The altar consumes all {qty} {item}(s)..."))
 
+            del inv[item]
+
+        slow_print(highlight("You now act twice in battle."))
+        return
+
+    # =========================
+    # SACRIFICE MENU
+    # =========================
+    print(highlight("\nSacrifice Options"))
+    print("-" * 30)
+
+    for i, item in enumerate(valid, 1):
+        print(f"{i}. {item} x{inv[item]['quantity']}")
+
+    print("-" * 30)
+
+    choice = input("Choose item: ").strip()
+
+    if not choice.isdigit():
+        slow_print(danger("Invalid choice."))
+        return
+
+    choice = int(choice) - 1
+
+    if choice < 0 or choice >= len(valid):
+        slow_print(danger("Invalid choice."))
+        return
+
+    item = valid[choice]
+    effect, amount = sacrifices[item]
+
+    qty = inv[item]["quantity"]
+
+    slow_print(danger(f"You sacrifice all {qty} {item}(s)."))
+
+    # =========================
+    # EFFECTS SCALE WITH QTY
+    # =========================
+    if effect == "gold":
+        total = amount * qty
+        hero.gold += total
+        slow_print(highlight(f"+{total} Gold"))
+
+    elif effect == "strength":
+        total = amount * qty
+        hero.strength += total
+        slow_print(highlight(f"+{total} Strength"))
+
+    elif effect == "intelligence":
+        total = amount * qty
+        hero.intelligence += total
+        slow_print(highlight(f"+{total} Strength"))
+
+    elif effect == "heal":
+        total = amount * qty
+        hero.health += total
+        slow_print(highlight(f"+{total} HP"))
+
+    elif effect == "time":
+        hero.flags["time_mastery"] = True
+        slow_print(highlight("Time bends around you."))
+
+    # remove all
+    del inv[item]
 # =========================
 # ENEMY
 # =========================
@@ -211,12 +263,14 @@ def time_distortion(hero):
     effect = random.choice(["heal", "damage", "nothing"])
 
     if effect == "heal":
-        hero.health = hero.health + random.randint(5, 15)
-        slow_print("+HP")
+        num = random.randint(5, 15)
+        hero.health = hero.health + num
+        slow_print(f"+{num} HP")
 
     elif effect == "damage":
-        hero.health -= random.randint(5, 15)
-        slow_print(danger("-HP"))
+        num = random.randint(5, 15)
+        hero.health -= num
+        slow_print(danger(f"-{num} HP"))
 
     else:
         slow_print("Nothing happens...")
@@ -240,7 +294,6 @@ def boss_encounter(hero):
 
     if result == "win":
         hero.flags["desert_boss_defeated"] = True
-        hero.flags["in_desert_dungeon"] = False
 
 
 # =========================
@@ -266,8 +319,12 @@ def attempt_escape(hero, place):
 
     if hero.flags.get("desert_boss_defeated"):
         slow_print(highlight("You escape the dungeon."))
+
         hero.flags["in_desert_dungeon"] = False
-        if hero.flags["in_desert_dungeon"] == False:
-            place = "desert"
+        hero.currentPlace = "desert"
+
+        return True
+
     else:
         slow_print(danger("There is no exit."))
+        return False

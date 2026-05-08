@@ -55,8 +55,8 @@ def create_enemy(enemy_type):
         "Goblin": Enemy("Goblin", 20, 5, 10, 10, Item("Goblin Tooth")),
         "Troll": Enemy("Troll", 50, 10, 25, 25, Item("Troll Hide")),
         "Locust Swarm": Enemy("Locust Swarm", 30, 7, 15, 30, Item("Locust Wing")),
-        "Dragon": Enemy("Dragon", 100, 20, 50, 200, Item("Dragon Scale")),
-        "Horror": Enemy("Cthulu", 200, 30, 100, 500, Item("Cthulu's Eye")),
+        "Dragon": Enemy("Dragon", 250, 20, 50, 200, Item("Dragon Scale")),
+        "Horror": Enemy("Cthulu", 1000, 30, 100, 500, Item("Cthulu's Eye")),
         "Rat King": Enemy("Rat King", 75, 12, 35, 100, Item("Rat King's Crown")),
         "Chrono Guardian": Enemy("Chrono Guardian", 120, 15, 50, 100, Item("Core of Time")),
         "Henrik": Enemy("Henrik", 50, 5, 50, 100, None),
@@ -100,14 +100,12 @@ def display_enemy(enemy, hero):
     import random
     from inventory import add_item
 
-    hero.flags.setdefault("double_turn", False)
-
     enemy_intro(enemy)
 
     while enemy.health > 0 and hero.health > 0:
 
         # ================= PLAYER ACTION COUNT =================
-        actions = 2 if hero.flags["extra_turn"] else 1
+        actions = 2 if hero.flags.get("extra_turn", False) else 1
 
         # ================= PLAYER TURNS =================
         for turn in range(actions):

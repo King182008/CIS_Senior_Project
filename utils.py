@@ -3,7 +3,7 @@ import time
 # =========================
 # Utility
 # =========================
-def slow_print(text, delay=0.05):
+def slow_print(text, delay=0.025):
     for char in text:
         print(char, end='', flush=True)
         time.sleep(delay)

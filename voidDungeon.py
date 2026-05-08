@@ -158,11 +158,7 @@ def whisper_event(hero):
         "The Void whispers secrets you cannot understand."
     ]
 
-    slow_print(
-        danger(
-            random.choice(whispers)
-        )
-    )
+    slow_print(danger(random.choice(whispers)))
 
     if random.random() < 0.3:
 
@@ -176,11 +172,7 @@ def whisper_event(hero):
 # =========================================================
 def void_distortion(hero):
 
-    slow_print(
-        danger(
-            "Reality twists around you."
-        )
-    )
+    slow_print(danger("Reality twists around you."))
 
     effect = random.choice([
 
@@ -199,11 +191,7 @@ def void_distortion(hero):
 
         hero.health -= dmg
 
-        slow_print(
-            danger(
-                f"You suffer {dmg} damage."
-            )
-        )
+        slow_print(danger(f"You suffer {dmg} damage."))
 
     elif effect == "heal":
 
@@ -211,11 +199,7 @@ def void_distortion(hero):
 
         hero.health += heal
 
-        slow_print(
-            highlight(
-                f"You recover {heal} HP."
-            )
-        )
+        slow_print(highlight(f"You recover {heal} HP."))
 
     elif effect == "mana":
 
@@ -223,17 +207,11 @@ def void_distortion(hero):
 
         hero.mana += mana
 
-        slow_print(
-            highlight(
-                f"+{mana} Mana"
-            )
-        )
+        slow_print(highlight(f"+{mana} Mana"))
 
     else:
 
-        slow_print(
-            "The distortion fades harmlessly."
-        )
+        slow_print("The distortion fades harmlessly.")
 
 
 # =========================================================
@@ -241,11 +219,7 @@ def void_distortion(hero):
 # =========================================================
 def memory_event(hero):
 
-    slow_print(
-        highlight(
-            "A memory appears before you..."
-        )
-    )
+    slow_print(highlight("A memory appears before you..."))
 
     memories = [
 
@@ -274,23 +248,11 @@ def memory_event(hero):
 # =========================================================
 def mirror_event(hero):
 
-    slow_print(
-        highlight(
-            "\nA mirror forms in the darkness."
-        )
-    )
+    slow_print(highlight("\nA mirror forms in the darkness."))
 
-    slow_print(
-        lore(
-            "Inside it... you see yourself."
-        )
-    )
+    slow_print(lore("Inside it... you see yourself."))
 
-    slow_print(
-        danger(
-            "But something is wrong."
-        )
-    )
+    slow_print(danger("But something is wrong."))
 
     result = random.choice([
 
@@ -307,11 +269,7 @@ def mirror_event(hero):
 
         hero.strength += 1
 
-        slow_print(
-            highlight(
-                "+1 Strength"
-            )
-        )
+        slow_print(highlight("+1 Strength"))
 
     elif result == "fear":
 
@@ -319,27 +277,17 @@ def mirror_event(hero):
 
         hero.health -= dmg
 
-        slow_print(
-            danger(
-                f"-{dmg} HP"
-            )
-        )
+        slow_print(danger(f"-{dmg} HP"))
 
     elif result == "knowledge":
 
         hero.intelligence += 1
 
-        slow_print(
-            highlight(
-                "+1 Intelligence"
-            )
-        )
+        slow_print(highlight("+1 Intelligence"))
 
     else:
 
-        slow_print(
-            "The mirror shatters."
-        )
+        slow_print("The mirror shatters.")
 
 
 # =========================================================
@@ -347,17 +295,9 @@ def mirror_event(hero):
 # =========================================================
 def cosmic_event(hero):
 
-    slow_print(
-        highlight(
-            "\nThe stars begin moving."
-        )
-    )
+    slow_print(highlight("\nThe stars begin moving."))
 
-    slow_print(
-        danger(
-            "Constellations rearrange into an eye."
-        )
-    )
+    slow_print(danger("Constellations rearrange into an eye."))
 
     result = random.choice([
 
@@ -374,11 +314,7 @@ def cosmic_event(hero):
 
         hero.mana += gain
 
-        slow_print(
-            highlight(
-                f"+{gain} Mana"
-            )
-        )
+        slow_print(highlight(f"+{gain} Mana"))
 
     elif result == "madness":
 
@@ -386,21 +322,13 @@ def cosmic_event(hero):
 
         hero.health -= loss
 
-        slow_print(
-            danger(
-                f"-{loss} HP"
-            )
-        )
+        slow_print(danger(f"-{loss} HP"))
 
     else:
 
         hero.flags["void_blessing"] = True
 
-        slow_print(
-            highlight(
-                "The cosmos acknowledges you."
-            )
-        )
+        slow_print(highlight("The cosmos acknowledges you."))
 
 
 # =========================================================
@@ -408,17 +336,9 @@ def cosmic_event(hero):
 # =========================================================
 def void_merchant(hero):
 
-    slow_print(
-        highlight(
-            "\nA hooded merchant emerges from the dark."
-        )
-    )
+    slow_print(highlight("\nA hooded merchant emerges from the dark."))
 
-    slow_print(
-        lore(
-            "\"Everything has a price.\""
-        )
-    )
+    slow_print(lore("\"Everything has a price.\""))
 
     print("\n1. Void Potion (25 gold)")
     print("2. Forbidden Knowledge (50 gold)")
@@ -434,19 +354,11 @@ def void_merchant(hero):
 
             hero.health += 40
 
-            slow_print(
-                highlight(
-                    "+40 HP"
-                )
-            )
+            slow_print(highlight("+40 HP"))
 
         else:
 
-            slow_print(
-                danger(
-                    "Not enough gold."
-                )
-            )
+            slow_print(danger("Not enough gold."))
 
     elif choice == "2":
 
@@ -456,25 +368,15 @@ def void_merchant(hero):
 
             hero.intelligence += 2
 
-            slow_print(
-                highlight(
-                    "+2 Intelligence"
-                )
-            )
+            slow_print(highlight("+2 Intelligence"))
 
         else:
 
-            slow_print(
-                danger(
-                    "Not enough gold."
-                )
-            )
+            slow_print(danger("Not enough gold."))
 
     else:
 
-        slow_print(
-            "The merchant disappears."
-        )
+        slow_print("The merchant disappears.")
 
 
 # =========================================================
@@ -482,31 +384,19 @@ def void_merchant(hero):
 # =========================================================
 def abyss_event(hero):
 
-    slow_print(
-        danger(
-            "The Void notices you."
-        )
-    )
+    slow_print(danger("The Void notices you."))
 
     if random.random() < 0.5:
 
         hero.health -= 25
 
-        slow_print(
-            danger(
-                "-25 HP"
-            )
-        )
+        slow_print(danger("-25 HP"))
 
     else:
 
         hero.mana += 50
 
-        slow_print(
-            highlight(
-                "+50 Mana"
-            )
-        )
+        slow_print(highlight("+50 Mana"))
 
 
 # =========================================================
@@ -516,17 +406,11 @@ def void_miniboss(hero):
 
     if hero.flags.get("void_beacon_destroyed"):
 
-        slow_print(
-            "The shattered beacon drifts silently."
-        )
+        slow_print("The shattered beacon drifts silently.")
 
         return
 
-    slow_print(
-        danger(
-            "\nTHE VOID BEACON AWAKENS."
-        )
-    )
+    slow_print(danger("\nTHE VOID BEACON AWAKENS."))
 
     enemy = combat.create_enemy("Void Beacon")
 
@@ -536,11 +420,7 @@ def void_miniboss(hero):
 
         hero.flags["void_beacon_destroyed"] = True
 
-        slow_print(
-            highlight(
-                "The Beacon collapses."
-            )
-        )
+        slow_print(highlight("The Beacon collapses."))
 
     return result
 
@@ -552,27 +432,17 @@ def cthulu_encounter(hero):
 
     if not hero.flags.get("void_beacon_destroyed"):
 
-        slow_print(
-            danger(
-                "A force blocks your path."
-            )
-        )
+        slow_print(danger("A force blocks your path."))
 
         return
 
     if hero.flags.get("void_boss_defeated"):
 
-        slow_print(
-            "The Horror's corpse drifts endlessly."
-        )
+        slow_print("The Horror's corpse drifts endlessly.")
 
         return
 
-    slow_print(
-        danger(
-            "\nTHE HORROR DESCENDS."
-        )
-    )
+    slow_print(danger("\nTHE HORROR DESCENDS."))
 
     enemy = combat.create_enemy("Horror")
 
@@ -583,23 +453,11 @@ def cthulu_encounter(hero):
         hero.flags["void_boss_defeated"] = True
         hero.flags["in_void_dungeon"] = False
 
-        slow_print(
-            highlight(
-                "\n=== VICTORY ==="
-            )
-        )
+        slow_print(highlight("\n=== VICTORY ==="))
 
-        slow_print(
-            lore(
-                "The Void convulses violently."
-            )
-        )
+        slow_print(lore("The Void convulses violently."))
 
-        slow_print(
-            danger(
-                "The Horror collapses inward."
-            )
-        )
+        slow_print(danger("The Horror collapses inward."))
 
     return result
 
@@ -638,28 +496,18 @@ def inventory(hero):
 # =========================================================
 def attempt_escape(hero):
 
-    slow_print(
-        "You attempt to escape the Void..."
-    )
+    slow_print("You attempt to escape the Void...")
 
     if random.random() < 0.35:
 
         hero.flags["in_void_dungeon"] = False
 
-        slow_print(
-            highlight(
-                "Reality bends. You escape."
-            )
-        )
+        slow_print(highlight("Reality bends. You escape."))
 
         return "escape"
 
     else:
 
-        slow_print(
-            danger(
-                "The Void refuses to release you."
-            )
-        )
+        slow_print(danger("The Void refuses to release you."))
 
         return None

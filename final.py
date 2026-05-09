@@ -182,7 +182,7 @@ def final_ending(hero):
         slow_print(
             danger("This was not the ending fate intended.")
         )
-
-    slow_print(highlight("\nThank you for playing.\n"))
     slow_print(npc("\nTime is important, go outside, thank your parents, or spend time with your loved ones, one day it'll be too late"))
+    slow_print(highlight("\nThank you for playing.\n"))
+
     sys.exit()

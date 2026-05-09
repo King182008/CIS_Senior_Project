@@ -1,14 +1,14 @@
 {
-    "name": "penis man",
-    "level": 6,
-    "health": 709,
-    "mana": 176,
-    "strength": 20,
-    "intelligence": 11,
-    "agility": 5,
-    "xp": 719,
-    "xp_to_next_level": 1800,
-    "gold": 2163,
+    "name": "King",
+    "level": 4,
+    "health": 1222,
+    "mana": 25,
+    "strength": 6,
+    "intelligence": 6,
+    "agility": 3,
+    "xp": 505,
+    "xp_to_next_level": 800,
+    "gold": 690,
     "weapon": {
         "type": "weapon",
         "name": "Excalibur",
@@ -20,21 +20,24 @@
     "currentPlace": "void",
     "inventory": {
         "Rat Tail": {
-            "quantity": 101,
+            "quantity": 168,
             "item": {
                 "type": "item",
                 "name": "Rat Tail"
             }
         },
-        "Wooden Sword": {
+        "Goblin Tooth": {
             "quantity": 1,
             "item": {
-                "type": "weapon",
-                "name": "Wooden Sword",
-                "price": 0,
-                "quantity": 1,
-                "damage": 5,
-                "mana_gain": 5
+                "type": "item",
+                "name": "Goblin Tooth"
+            }
+        },
+        "Locust Wing": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Locust Wing"
             }
         },
         "Troll Hide": {
@@ -42,48 +45,6 @@
             "item": {
                 "type": "item",
                 "name": "Troll Hide"
-            }
-        },
-        "Goblin Tooth": {
-            "quantity": 4,
-            "item": {
-                "type": "item",
-                "name": "Goblin Tooth"
-            }
-        },
-        "Locust Wing": {
-            "quantity": 3,
-            "item": {
-                "type": "item",
-                "name": "Locust Wing"
-            }
-        },
-        "Withered Bone": {
-            "quantity": 27,
-            "item": {
-                "type": "item",
-                "name": "Withered Bone"
-            }
-        },
-        "Cracked Tooth": {
-            "quantity": 21,
-            "item": {
-                "type": "item",
-                "name": "Cracked Tooth"
-            }
-        },
-        "Sand Essence": {
-            "quantity": 15,
-            "item": {
-                "type": "item",
-                "name": "Sand Essence"
-            }
-        },
-        "Time Shard": {
-            "quantity": 3,
-            "item": {
-                "type": "item",
-                "name": "Time Shard"
             }
         },
         "Dragon Scale": {
@@ -104,51 +65,36 @@
                 "mana_gain": 5
             }
         },
-        "Void Core": {
+        "Caduceus Staff": {
             "quantity": 1,
             "item": {
-                "type": "item",
-                "name": "Void Core"
-            }
-        },
-        "Void Shard": {
-            "quantity": 3,
-            "item": {
-                "type": "item",
-                "name": "Void Shard"
-            }
-        },
-        "Cthulu's Eye": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Cthulu's Eye"
+                "type": "weapon",
+                "name": "Caduceus Staff",
+                "price": 100,
+                "quantity": 1,
+                "damage": 15,
+                "mana_gain": 15
             }
         }
     },
     "quest_log": {
-        "Rat Problem": true,
-        "Goblin Threat": true,
-        "Dragon Slayer": true
+        "Get Bread": "Complete"
     },
     "flags": {
+        "placesBeen": {
+            "forest": true,
+            "desert": true,
+            "mountains": true,
+            "swamp": true,
+            "volcano": true,
+            "void": true
+        },
         "mountain_intro_seen": true,
         "desert_intro_seen": true,
         "swamp_intro_seen": true,
-        "swamp_interact_seen": true,
-        "rat_king_defeated": true,
-        "desert_interact_seen": true,
-        "in_desert_dungeon": false,
-        "ritual_room_found": true,
-        "desert_boss_defeated": true,
-        "extra_turn": true,
         "volcano_intro_seen": true,
         "volcano_outro_seen": true,
-        "forest_intro_seen": true,
-        "forest_outro_seen": true,
-        "void_intro_seen": true,
-        "void_boss_defeated": true,
-        "in_void_dungeon": false,
-        "void_beacon_destroyed": true
+        "void_password_unlocked": true,
+        "void_intro_seen": true
     }
 }

@@ -452,13 +452,7 @@ def cthulu_encounter(hero):
 
         hero.flags["void_boss_defeated"] = True
         hero.flags["in_void_dungeon"] = False
-
-        slow_print(highlight("\n=== VICTORY ==="))
-
-        slow_print(lore("The Void convulses violently."))
-
-        slow_print(danger("The Horror collapses inward."))
-
+        
     return result
 
 

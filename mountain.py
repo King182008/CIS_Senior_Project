@@ -1,4 +1,4 @@
-from utils import slow_print, danger, lore, highlight, name
+from utils import slow_print, danger, lore, highlight, name, npc
 
 
 # =========================
@@ -113,6 +113,90 @@ def mountainInteract(hero, place):
             slow_print(f"- {name('Fire encircling the center')}")
 
             slow_print(danger("At the center of it all... something labeled only as 'The Horror'."))
+
+            while True:
+                print("")
+                print(highlight("\n=== THE DIARY ==="))
+                print("-" * 40)
+                print(f"1. {name('Continue Reading')}")
+                print(f"2. {danger('Close the Diary')}")
+                print("-" * 40)
+
+                read_choice = input(highlight("Choose an action (1-2 or name): ")).strip().lower()
+
+                # =========================
+                # CONTINUE READING
+                # =========================
+                if read_choice in ["1", "continue", "read", "continue reading"]:
+
+                    slow_print("")
+                    slow_print(lore("The writing grows worse the deeper you read."))
+                    slow_print(lore("Entire sentences overlap each other, as if written hundreds of times."))
+
+                    slow_print("")
+                    slow_print(danger("\"") + f"{npc('Time')} {danger('is not breaking.')}\"")
+                    slow_print(danger("\"It already broke.\""))
+
+                    slow_print("")
+                    slow_print("Several pages are scratched out violently.")
+                    slow_print("Yet the words beneath still somehow remain visible.")
+
+                    slow_print("")
+                    slow_print(lore("\"The Void does not exist somewhere.\""))
+                    slow_print(lore("\"It exists between moments.\""))
+
+                    slow_print("")
+                    slow_print("You turn another page.")
+
+                    slow_print(danger("Your own handwriting stares back at you."))
+
+                    slow_print("")
+                    slow_print("\"I saw the tree again.\"")
+                    slow_print("\"Five roots. Five paths.\"")
+                    slow_print("\"Every path ends the same way.\"")
+
+                    slow_print("")
+                    slow_print(highlight("THE HORROR WAITS AT THE CENTER."))
+
+                    slow_print("")
+                    slow_print("The next pages make less and less sense.")
+
+                    slow_print(lore("\"The mountain remembers names that no longer exist.\""))
+                    slow_print(lore("\"The dead speak backwards beyond the Rift.\""))
+                    slow_print(lore("\"The stars are moving closer every loop.\""))
+
+                    slow_print("")
+                    slow_print(f"One page {npc("is")} completely covered in repeated words:")
+
+                    for _ in range(3):
+                        slow_print(danger("DON'T LOOK INTO THE VOID DON'T LOOK INTO ") + npc("THE") + danger(" VOID DON'T LOOK INTO THE VOID"))
+                    slow_print("")
+                    slow_print("At the very end of the diary, one final sentence remains.")
+
+                    slow_print("")
+                    slow_print(highlight(f"\"If you are reading this... it means the {npc('Horror')}")  + highlight(" noticed you too.\""))
+                    slow_print("")
+                    slow_print(danger("The cabin suddenly creaks around you."))
+
+                    break
+
+                # =========================
+                # EXIT
+                # =========================
+                elif read_choice in ["2", "exit", "close", "leave", "close diary"]:
+
+                    slow_print("")
+                    slow_print("You close the diary.")
+                    slow_print(lore("For a moment, the whispering inside the cabin stops."))
+
+                    slow_print("")
+                    slow_print(danger("But deep in the mountains... something still watches."))
+
+                    break
+
+                else:
+                    slow_print(danger("Invalid choice."))
+
 
         # =========================
         # LORE

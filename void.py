@@ -103,6 +103,7 @@ def voidInteract(hero, place):
 
             elif result == "win":
                 hero.flags["void_boss_defeated"] = True
+                from final import final_ending
 
                 # Victory sequence
                 slow_print("")
@@ -123,6 +124,8 @@ def voidInteract(hero, place):
 
                 slow_print("")
                 slow_print(danger("The Void still watches."))
+                final_ending(hero)
+
 
             else:
                 # fallback safety (in case combat returns something unexpected)

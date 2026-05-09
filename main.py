@@ -38,7 +38,7 @@ if __name__ == "__main__":
             characterCreation.hero = hero
 
             print(lore("\nStarting tutorial...\n"))
-            tutorial.Begin_tutorial(hero)
+            tutorial.Begin_tutorial(hero, slot)
             break
 
         # =========================

@@ -4,7 +4,9 @@ from swamp import swampIntro
 from mountain import mountainIntro
 from volcano import volcanoIntro
 from void import voidIntro
-placesBeen = {"forest": True,"desert": False,"mountains": False,"swamp": False,"volcano": False, "void": False}
+
+from utils import highlight, danger, name
+
 
 INTRO_SCENES = {
     "desert": desertIntro,
@@ -15,9 +17,26 @@ INTRO_SCENES = {
 }
 
 
-from utils import highlight, danger, name
-
+# =========================
+# TRAVEL
+# =========================
 def travel(place, hero):
+
+    # =========================
+    # CREATE FLAGS IF MISSING
+    # =========================
+    if "placesBeen" not in hero.flags:
+        hero.flags["placesBeen"] = {
+            "forest": True,
+            "desert": False,
+            "mountains": False,
+            "swamp": False,
+            "volcano": False,
+            "void": False
+        }
+
+    placesBeen = hero.flags["placesBeen"]
+
     destinations = {
         "forest": ["desert", "mountains"],
         "desert": ["forest", "swamp"],
@@ -27,8 +46,17 @@ def travel(place, hero):
         "void": ["forest"]
     }
 
-    # Unlock void
-    required = ["Dragon Scale", "Locust Wing", "Troll Hide", "Goblin Tooth", "Rat Tail"]
+    # =========================
+    # UNLOCK VOID
+    # =========================
+    required = [
+        "Dragon Scale",
+        "Locust Wing",
+        "Troll Hide",
+        "Goblin Tooth",
+        "Rat Tail"
+    ]
+
     if all(item in hero.inventory for item in required):
         if "void" not in destinations["forest"]:
             destinations["forest"].append("void")
@@ -40,7 +68,7 @@ def travel(place, hero):
     options = destinations[place]
 
     # =========================
-    # DISPLAY OPTIONS (COLORED + NUMBERED)
+    # DISPLAY OPTIONS
     # =========================
     for i, dest in enumerate(options, 1):
         print(f"{highlight(str(i) + '.')} {name(dest.title())}")
@@ -48,7 +76,7 @@ def travel(place, hero):
     print("-" * 40)
 
     # =========================
-    # FAST INPUT (NUMBER ONLY)
+    # INPUT
     # =========================
     decision = input(
         f"Choose destination {highlight('(number)')} or {danger('exit')}:\n>> "
@@ -70,6 +98,31 @@ def travel(place, hero):
     chosen = options[index]
 
     # =========================
+    # VOID PASSWORD
+    # =========================
+    if chosen == "void":
+
+        # Create flag if missing
+        if "void_password_unlocked" not in hero.flags:
+            hero.flags["void_password_unlocked"] = False
+
+        # Only ask once
+        if not hero.flags["void_password_unlocked"]:
+
+            password = input(
+                danger("A voice whispers: 'Speak the password.'\n>> ")
+            ).strip().lower()
+
+            if password != "time is the horror":
+                print(danger("The Void rejects you."))
+                return place
+
+            # Unlock permanently
+            hero.flags["void_password_unlocked"] = True
+
+            print(highlight("The Void remembers your name."))
+
+    # =========================
     # REVISIT CHECK
     # =========================
     if placesBeen[chosen]:
@@ -88,5 +141,9 @@ def travel(place, hero):
     if not placesBeen[chosen] and chosen in INTRO_SCENES:
         INTRO_SCENES[chosen](hero)
 
+    # =========================
+    # SAVE VISIT
+    # =========================
     placesBeen[chosen] = True
+
     return chosen

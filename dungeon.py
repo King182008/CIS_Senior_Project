@@ -207,7 +207,7 @@ def ritual_room(hero):
     elif effect == "intelligence":
         total = amount * qty
         hero.intelligence += total
-        slow_print(highlight(f"+{total} Strength"))
+        slow_print(highlight(f"+{total} Intelligence"))
 
     elif effect == "heal":
         total = amount * qty

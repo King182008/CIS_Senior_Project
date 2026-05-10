@@ -45,6 +45,7 @@ class Character:
             "gold": self.gold,
             "weapon": self.weapon.to_dict() if hasattr(self.weapon, "to_dict") else None,
             "currentPlace": self.currentPlace,
+            "spellList": list(self.spellList),
 
             "inventory": {
                 item_name: {
@@ -59,6 +60,7 @@ class Character:
 
             "quest_log": self.quest_log,
             "flags": self.flags
+            
         }
 
     # =========================
@@ -103,6 +105,7 @@ class Character:
         hero.xp = data.get("xp", 0)
         hero.xp_to_next_level = data.get("xp_to_next_level", 50 * (hero.level ** 2))
         hero.currentPlace = data.get("currentPlace", "forest")
+        hero.spellList = set(data.get("spellList", []))
 
         hero.quest_log = data.get("quest_log", {})
         hero.flags = data.get("flags", {})

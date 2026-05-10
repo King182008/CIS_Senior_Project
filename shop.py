@@ -53,7 +53,7 @@ bread = ShopItem("Bread", 5, 1)
 silverPendent = ShopItem("Silver Pendent", 50, 1)
 
 weapons = {
-    "fists": ShopWeapon("Fists", 0, 1, 5, 5),
+    "fists": ShopWeapon("Fists", 0, 1, 2, 5),
     "Wooden Sword": ShopWeapon("Wooden Sword", 0, 1, 5, 5),
     "sword": ShopWeapon("Sword", 25, 1, 5, 5),
     "great sword": ShopWeapon("Great Sword", 50, 1, 10, 5),

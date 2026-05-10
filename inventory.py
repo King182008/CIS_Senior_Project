@@ -3,7 +3,7 @@ from utils import highlight, danger, name
 
 
 # =========================
-# HELPERS (ANSI-safe padding)
+# HELPERS
 # =========================
 
 def clean_len(text):
@@ -33,7 +33,7 @@ def show_inventory(hero):
 
     items_list = list(hero.inventory.items())
 
-    # Header (NO coloring inside padding)
+    # Header
     header = (
         pad("#", 4) +
         pad("Item", 30) +
@@ -151,9 +151,12 @@ def show_inventory(hero):
         if item_data["quantity"] <= 0:
             del hero.inventory[item_name]
 
-        if old_weapon:
+        # Don't store fists in inventory
+        if old_weapon and old_weapon.name != "Fists":
+
             if old_weapon.name in hero.inventory:
                 hero.inventory[old_weapon.name]["quantity"] += 1
+
             else:
                 hero.inventory[old_weapon.name] = {
                     "item": old_weapon,
@@ -165,7 +168,7 @@ def show_inventory(hero):
 
 
 # =========================
-# ADD ITEM (FIXED SAFELY)
+# ADD ITEM
 # =========================
 
 def add_item(item, hero):
@@ -180,5 +183,19 @@ def add_item(item, hero):
             "item": item,
             "quantity": 1
         }
+
+    # =========================
+    # PERMANENT SPELL UNLOCKS
+    # =========================
+    name_lower = item.name.lower()
+
+    if "fire staff" in name_lower:
+        hero.spellList.add("fireball")
+
+    elif "water staff" in name_lower:
+        hero.spellList.add("crash")
+
+    elif "poison staff" in name_lower:
+        hero.spellList.add("poison cloud")
 
     print(highlight(f"+ Obtained {item.name}"))

@@ -173,19 +173,6 @@ def display_enemy(enemy, hero):
 
                 hero.spellList.add("heal")
 
-                if hero.weapon:
-
-                    w = hero.weapon.name.lower()
-
-                    if "fire" in w:
-                        hero.spellList.add("fireball")
-
-                    elif "water" in w:
-                        hero.spellList.add("crash")
-
-                    elif "poison" in w:
-                        hero.spellList.add("poison cloud")
-
                 spells = {
 
                     "heal": {
@@ -197,7 +184,7 @@ def display_enemy(enemy, hero):
                     "fireball": {
                         "mana": 50,
                         "damage": 30,
-                        "desc": "Massive fire damage"
+                        "desc": "Massive fire explosion"
                     },
 
                     "crash": {
@@ -246,7 +233,7 @@ def display_enemy(enemy, hero):
 
                 spell_input = input("\nCast > ").strip().lower()
 
-                # number support
+                # ================= NUMBER SUPPORT =================
                 if spell_input.isdigit():
 
                     index = int(spell_input) - 1
@@ -272,8 +259,10 @@ def display_enemy(enemy, hero):
 
                 hero.mana -= spell["mana"]
 
-                # ================= HEAL =================
-                if "heal" in spell:
+                # =================================================
+                # HEAL SPELL
+                # =================================================
+                if spell_choice == "heal":
 
                     heal = spell["heal"] + hero.intelligence
 
@@ -281,21 +270,111 @@ def display_enemy(enemy, hero):
 
                     print(
                         highlight(
-                            f"\nYou restore {heal} HP!"
+                            "\nA warm light surrounds you..."
                         )
                     )
 
-                # ================= DAMAGE =================
-                else:
+                    time.sleep(1)
+
+                    print(
+                        highlight(
+                            f"You restore {heal} HP!"
+                        )
+                    )
+
+                # =================================================
+                # FIREBALL
+                # =================================================
+                elif spell_choice == "fireball":
+
+                    dmg = spell["damage"] + hero.intelligence
+
+                    crit = random.randint(1, 100) <= 20
+
+                    if crit:
+                        dmg *= 2
+
+                    enemy.take_damage(dmg)
+
+                    print(danger("\nYou raise your staff..."))
+                    time.sleep(1)
+
+                    print(danger("Flames spiral through the air!"))
+                    time.sleep(1)
+
+                    print(
+                        danger(
+                            f"FIREBALL explodes for {dmg} damage!"
+                        )
+                    )
+
+                    if crit:
+                        print(highlight("Critical hit!"))
+
+                # =================================================
+                # CRASH
+                # =================================================
+                elif spell_choice == "crash":
 
                     dmg = spell["damage"] + hero.intelligence
 
                     enemy.take_damage(dmg)
 
+                    print(highlight("\nWater gathers around you..."))
+                    time.sleep(1)
+
+                    print(highlight("A crushing wave slams forward!"))
+                    time.sleep(1)
+
                     print(
                         danger(
-                            f"\n{spell_choice.title()} hits "
-                            f"{enemy.name} for {dmg} damage!"
+                            f"{enemy.name} takes {dmg} damage!"
+                        )
+                    )
+
+                    # stun chance
+                    if random.randint(1, 100) <= 30:
+
+                        print(
+                            highlight(
+                                f"{enemy.name} is stunned!"
+                            )
+                        )
+
+                        enemy.attack = max(0, enemy.attack - 3)
+
+                # =================================================
+                # POISON CLOUD
+                # =================================================
+                elif spell_choice == "poison cloud":
+
+                    dmg = spell["damage"] + hero.intelligence
+
+                    enemy.take_damage(dmg)
+
+                    print(danger("\nA toxic mist spreads..."))
+                    time.sleep(1)
+
+                    print(
+                        danger(
+                            f"{enemy.name} coughs violently!"
+                        )
+                    )
+
+                    print(
+                        danger(
+                            f"Poison deals {dmg} damage!"
+                        )
+                    )
+
+                    # poison tick
+                    poison_tick = 5 + hero.intelligence // 2
+
+                    enemy.take_damage(poison_tick)
+
+                    print(
+                        danger(
+                            f"Poison burns for {poison_tick} extra damage!"
                         )
                     )
 
@@ -335,24 +414,37 @@ def display_enemy(enemy, hero):
                 )
             )
 
-            hero.health -= enemy.attack
+            # ================= DODGE SYSTEM =================
+            dodge_chance = min(hero.agility, 50)
 
-            print(
-                danger(
-                    f"You take {enemy.attack} damage!"
+            if random.randint(1, 100) <= dodge_chance:
+
+                print(
+                    highlight(
+                        "You dodged the attack!"
+                    )
                 )
-            )
 
-        # =========================================================
-        # PLAYER DEAD
-        # =========================================================
-        if hero.health <= 0:
+            else:
 
-            print(danger("\nYou have fallen..."))
+                hero.health -= enemy.attack
 
-            delete_save(hero.slot)
+                print(
+                    danger(
+                        f"You take {enemy.attack} damage!"
+                    )
+                )
 
-            return "dead"
+                # =========================================================
+                # PLAYER DEAD
+                # =========================================================
+                if hero.health <= 0:
+
+                    print(danger("\nYou have fallen..."))
+
+                    delete_save(hero.slot)
+
+                    return "dead"
 
     # =============================================================
     # VICTORY

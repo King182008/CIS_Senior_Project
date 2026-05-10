@@ -1,57 +1,40 @@
 {
-    "name": "King",
-    "level": 4,
-    "health": 1222,
-    "mana": 25,
-    "strength": 6,
-    "intelligence": 6,
-    "agility": 3,
-    "xp": 505,
-    "xp_to_next_level": 800,
-    "gold": 690,
+    "name": "fiki",
+    "level": 3,
+    "health": 296,
+    "mana": 67,
+    "strength": 4,
+    "intelligence": 4,
+    "agility": 2,
+    "xp": 100,
+    "xp_to_next_level": 450,
+    "gold": 0,
     "weapon": {
         "type": "weapon",
-        "name": "Excalibur",
-        "price": 100,
+        "name": "Fists",
+        "price": 0,
         "quantity": 1,
-        "damage": 20,
+        "damage": 2,
         "mana_gain": 5
     },
-    "currentPlace": "void",
+    "currentPlace": "forest",
     "inventory": {
         "Rat Tail": {
-            "quantity": 168,
+            "quantity": 56,
             "item": {
                 "type": "item",
                 "name": "Rat Tail"
             }
         },
-        "Goblin Tooth": {
+        "Fists": {
             "quantity": 1,
             "item": {
-                "type": "item",
-                "name": "Goblin Tooth"
-            }
-        },
-        "Locust Wing": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Locust Wing"
-            }
-        },
-        "Troll Hide": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Troll Hide"
-            }
-        },
-        "Dragon Scale": {
-            "quantity": 1,
-            "item": {
-                "type": "item",
-                "name": "Dragon Scale"
+                "type": "weapon",
+                "name": "Fists",
+                "price": 0,
+                "quantity": 1,
+                "damage": 2,
+                "mana_gain": 5
             }
         },
         "Great Sword": {
@@ -65,36 +48,32 @@
                 "mana_gain": 5
             }
         },
-        "Caduceus Staff": {
-            "quantity": 1,
+        "Goblin Tooth": {
+            "quantity": 5,
             "item": {
-                "type": "weapon",
-                "name": "Caduceus Staff",
-                "price": 100,
-                "quantity": 1,
-                "damage": 15,
-                "mana_gain": 15
+                "type": "item",
+                "name": "Goblin Tooth"
             }
         }
     },
     "quest_log": {
-        "Get Bread": "Complete"
+        "Get Bread": "Complete",
+        "Rat Problem": true
     },
     "flags": {
         "placesBeen": {
             "forest": true,
             "desert": true,
             "mountains": true,
-            "swamp": true,
+            "swamp": false,
             "volcano": true,
-            "void": true
+            "void": false
         },
         "mountain_intro_seen": true,
         "desert_intro_seen": true,
-        "swamp_intro_seen": true,
+        "forest_intro_seen": true,
+        "forest_outro_seen": true,
         "volcano_intro_seen": true,
-        "volcano_outro_seen": true,
-        "void_password_unlocked": true,
-        "void_intro_seen": true
+        "volcano_outro_seen": true
     }
 }

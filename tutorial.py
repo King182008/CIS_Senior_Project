@@ -442,6 +442,10 @@ def doom(hero, slot):
     if "Wooden Sword" in hero.inventory:
         del hero.inventory["Wooden Sword"]
 
+    # Default to fists if no weapon equipped
+    if hero.weapon is None:
+        hero.weapon = shop.weapons["fists"]
+
     hero.save_character(slot)
     ForestIntro(hero)
 

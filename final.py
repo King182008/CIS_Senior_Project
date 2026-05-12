@@ -27,6 +27,10 @@ def final_ending(hero):
         # Interaction Flags
         "swamp_interact_seen": False,
         "desert_interact_seen": False,
+        "mountain_interact_seen": False,
+        "volcano_interact_seen": False,
+        "forest_interact_seen": False,
+        "void_interact_seen": False,
 
         # Bosses / Events
         "rat_king_defeated": False,
@@ -41,7 +45,11 @@ def final_ending(hero):
 
         # Outros
         "volcano_outro_seen": False,
-        "forest_outro_seen": False
+        "forest_outro_seen": False,
+        "swamp_outro_seen": False,
+        "desert_outro_seen": False,
+        "mountain_outro_seen": False,
+        "void_outro_seen": False
     }
 
     # =========================

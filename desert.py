@@ -125,6 +125,8 @@ def desertInteract(hero, place):
         elif action in ["4", "exit", "leave"]:
             slow_print("You step away from the staircase.")
             slow_print(danger("For a moment... you swear something below was watching you leave."))
+            if not hero.flags.get("desert_outro_seen", False):
+                hero.flags["desert_outro_seen"] = True
             break
 
         else:

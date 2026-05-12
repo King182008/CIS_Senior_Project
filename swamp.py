@@ -127,6 +127,8 @@ def swampInteract(hero, place):
 
             slow_print("You step away from the pedestal.")
             slow_print("The swamp seems to close in behind you.")
+            if not hero.flags.get("swamp_outro_seen", False):
+                hero.flags["swamp_outro_seen"] = True
             break
 
         # =========================

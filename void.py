@@ -44,6 +44,8 @@ def voidIntro(hero):
 # Interaction
 # =========================
 def voidInteract(hero, place):
+    if not hero.flags.get("void_interact_seen", False):
+        hero.flags["void_interact_seen"] = True
 
     # Ensure boss flag exists
     hero.flags.setdefault("void_boss_defeated", False)
@@ -137,6 +139,8 @@ def voidInteract(hero, place):
         elif action in ["4", "exit"]:
             slow_print("You step away from the Void.")
             slow_print(lore("Reality slowly stabilizes around you."))
+            if not hero.flags.get("void_outro_seen", False):
+                hero.flags["void_outro_seen"] = True
             break
 
         else:

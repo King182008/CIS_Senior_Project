@@ -6,6 +6,71 @@ import sys
 
 
 # =========================
+# DEFAULT FLAG STATE
+# =========================
+DEFAULT_FLAGS = {
+    "mountain_intro_seen": False,
+    "desert_intro_seen": False,
+    "swamp_intro_seen": False,
+    "volcano_intro_seen": False,
+    "forest_intro_seen": False,
+    "void_intro_seen": False,
+
+    "swamp_interact_seen": False,
+    "desert_interact_seen": False,
+    "mountain_interact_seen": False,
+    "volcano_interact_seen": False,
+    "forest_interact_seen": False,
+    "void_interact_seen": False,
+
+    "rat_king_defeated": False,
+    "desert_boss_defeated": False,
+    "void_boss_defeated": False,
+    "void_beacon_destroyed": False,
+
+    "ritual_room_found": False,
+    "extra_turn": False,
+    "void_password_unlocked": False,
+
+    "volcano_outro_seen": False,
+    "forest_outro_seen": False,
+    "swamp_outro_seen": False,
+    "desert_outro_seen": False,
+    "mountain_outro_seen": False,
+    "void_outro_seen": False,
+}
+
+DEFAULT_PLACES_BEEN = {
+    "forest": True,
+    "desert": False,
+    "mountains": False,
+    "swamp": False,
+    "volcano": False,
+    "void": False,
+}
+
+
+def initialize_flags(flags, current_place="forest"):
+    if flags is None:
+        flags = {}
+
+    for key, default_value in DEFAULT_FLAGS.items():
+        flags.setdefault(key, default_value)
+
+    places = flags.get("placesBeen")
+    if not isinstance(places, dict):
+        flags["placesBeen"] = DEFAULT_PLACES_BEEN.copy()
+    else:
+        for place, default_value in DEFAULT_PLACES_BEEN.items():
+            places.setdefault(place, default_value)
+
+        if current_place in places:
+            places[current_place] = True
+
+    return flags
+
+
+# =========================
 # CHARACTER CLASS
 # =========================
 
@@ -25,8 +90,8 @@ class Character:
         self.weapon = weapons["Wooden Sword"]
         self.inventory = {}
         self.quest_log = {}
-        self.flags = {}
         self.currentPlace = "forest"
+        self.flags = initialize_flags({}, self.currentPlace)
 
     # =========================
     # SAVE DATA
@@ -108,7 +173,7 @@ class Character:
         hero.spellList = set(data.get("spellList", []))
 
         hero.quest_log = data.get("quest_log", {})
-        hero.flags = data.get("flags", {})
+        hero.flags = initialize_flags(data.get("flags", {}), hero.currentPlace)
 
         # ---------- WEAPON ----------
         weapon_data = data.get("weapon")

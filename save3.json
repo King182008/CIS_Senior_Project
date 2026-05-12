@@ -1,24 +1,29 @@
 {
     "name": "King",
-    "level": 2,
-    "health": 55,
-    "mana": 100,
-    "strength": 2,
-    "intelligence": 2,
-    "agility": 1,
-    "xp": 50,
-    "xp_to_next_level": 200,
-    "gold": 0,
+    "level": 5,
+    "health": 613,
+    "mana": 1010,
+    "strength": 9,
+    "intelligence": 8,
+    "agility": 4,
+    "xp": 420,
+    "xp_to_next_level": 1250,
+    "gold": 1072,
     "weapon": {
         "type": "weapon",
-        "name": "Fists",
-        "price": 0,
+        "name": "Caduceus Staff",
+        "price": 100,
         "quantity": 1,
-        "damage": 2,
-        "mana_gain": 5
+        "damage": 15,
+        "mana_gain": 15
     },
-    "currentPlace": "forest",
-    "spellList": [],
+    "currentPlace": "void",
+    "spellList": [
+        "poison cloud",
+        "fireball",
+        "crash",
+        "heal"
+    ],
     "inventory": {
         "Silver Pendent": {
             "quantity": 1,
@@ -28,10 +33,142 @@
                 "price": 50,
                 "quantity": 1
             }
+        },
+        "Rat Tail": {
+            "quantity": 202,
+            "item": {
+                "type": "item",
+                "name": "Rat Tail"
+            }
+        },
+        "Water Staff": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Water Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 5,
+                "mana_gain": 8
+            }
+        },
+        "Fire Staff": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Fire Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 5,
+                "mana_gain": 8
+            }
+        },
+        "Locust Wing": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Locust Wing"
+            }
+        },
+        "Goblin Tooth": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Goblin Tooth"
+            }
+        },
+        "Sand Essence": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Sand Essence"
+            }
+        },
+        "Cracked Tooth": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Cracked Tooth"
+            }
+        },
+        "Poison Staff": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Poison Staff",
+                "price": 40,
+                "quantity": 1,
+                "damage": 7,
+                "mana_gain": 10
+            }
+        },
+        "Dragon Scale": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Dragon Scale"
+            }
+        },
+        "Troll Hide": {
+            "quantity": 1,
+            "item": {
+                "type": "item",
+                "name": "Troll Hide"
+            }
+        },
+        "Excalibur": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Excalibur",
+                "price": 100,
+                "quantity": 1,
+                "damage": 20,
+                "mana_gain": 5
+            }
+        },
+        "Great Sword": {
+            "quantity": 1,
+            "item": {
+                "type": "weapon",
+                "name": "Great Sword",
+                "price": 50,
+                "quantity": 1,
+                "damage": 10,
+                "mana_gain": 5
+            }
         }
     },
     "quest_log": {
-        "Get Bread": "Complete"
+        "Get Bread": "Complete",
+        "Rat Problem": true,
+        "Goblin Threat": true,
+        "Dragon Slayer": true
     },
-    "flags": {}
+    "flags": {
+        "forest_intro_seen": true,
+        "forest_outro_seen": true,
+        "placesBeen": {
+            "forest": true,
+            "desert": true,
+            "mountains": true,
+            "swamp": true,
+            "volcano": true,
+            "void": true
+        },
+        "mountain_intro_seen": true,
+        "desert_intro_seen": true,
+        "swamp_intro_seen": true,
+        "swamp_interact_seen": true,
+        "rat_king_defeated": true,
+        "desert_interact_seen": true,
+        "in_desert_dungeon": false,
+        "ritual_room_found": true,
+        "desert_boss_defeated": true,
+        "extra_turn": true,
+        "volcano_intro_seen": true,
+        "volcano_outro_seen": true,
+        "void_password_unlocked": true,
+        "void_intro_seen": true
+    }
 }

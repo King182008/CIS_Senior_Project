@@ -44,6 +44,9 @@ def volcanoIntro(hero):
 # Interaction
 # =========================
 def volcanoInteract(hero, place):
+    if not hero.flags.get("volcano_interact_seen", False):
+        hero.flags["volcano_interact_seen"] = True
+
     if not hero.flags.get("volcano_intro_seen", False):
         slow_print("You step onto blackened stone, heat radiating in waves.")
         slow_print("Cracks glow beneath your feet, filled with slow-moving lava.")

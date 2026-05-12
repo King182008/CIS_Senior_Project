@@ -38,6 +38,9 @@ def ForestIntro(hero):
 # Forest Interaction
 # =========================
 def forestInteract(hero, place):
+    if not hero.flags.get("forest_interact_seen", False):
+        hero.flags["forest_interact_seen"] = True
+
     if not hero.flags.get("forest_intro_seen", False):
         slow_print("You look around to see a vast clearing, bathed in soft golden light.")
         slow_print(f"At its center stands the {lore('Heartroot')}, an enormous ancient tree.")

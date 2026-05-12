@@ -39,6 +39,9 @@ def mountainIntro(hero):
 # Interaction
 # =========================
 def mountainInteract(hero, place):
+    if not hero.flags.get("mountain_interact_seen", False):
+        hero.flags["mountain_interact_seen"] = True
+
     if not hero.flags.get("mountain_intro_seen", False):
         slow_print("You step carefully along a narrow ridge.")
         slow_print("The wind howls—but sometimes it plays in reverse.")

@@ -166,7 +166,7 @@ def mountainInteract(hero, place):
                     slow_print(lore("\"The stars are moving closer every loop.\""))
 
                     slow_print("")
-                    slow_print(f"One page {npc("is")} completely covered in repeated words:")
+                    slow_print(f"One page {npc('is')} completely covered in repeated words:")
 
                     for _ in range(3):
                         slow_print(danger("DON'T LOOK INTO THE VOID DON'T LOOK INTO ") + npc("THE") + danger(" VOID DON'T LOOK INTO THE VOID"))

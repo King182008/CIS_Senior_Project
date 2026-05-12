@@ -1,13 +1,13 @@
 {
-    "name": "fiki",
-    "level": 3,
-    "health": 296,
-    "mana": 67,
-    "strength": 4,
-    "intelligence": 4,
-    "agility": 2,
-    "xp": 100,
-    "xp_to_next_level": 450,
+    "name": "King",
+    "level": 2,
+    "health": 55,
+    "mana": 100,
+    "strength": 2,
+    "intelligence": 2,
+    "agility": 1,
+    "xp": 50,
+    "xp_to_next_level": 200,
     "gold": 0,
     "weapon": {
         "type": "weapon",
@@ -18,62 +18,20 @@
         "mana_gain": 5
     },
     "currentPlace": "forest",
+    "spellList": [],
     "inventory": {
-        "Rat Tail": {
-            "quantity": 56,
+        "Silver Pendent": {
+            "quantity": 1,
             "item": {
                 "type": "item",
-                "name": "Rat Tail"
-            }
-        },
-        "Fists": {
-            "quantity": 1,
-            "item": {
-                "type": "weapon",
-                "name": "Fists",
-                "price": 0,
-                "quantity": 1,
-                "damage": 2,
-                "mana_gain": 5
-            }
-        },
-        "Great Sword": {
-            "quantity": 1,
-            "item": {
-                "type": "weapon",
-                "name": "Great Sword",
+                "name": "Silver Pendent",
                 "price": 50,
-                "quantity": 1,
-                "damage": 10,
-                "mana_gain": 5
-            }
-        },
-        "Goblin Tooth": {
-            "quantity": 5,
-            "item": {
-                "type": "item",
-                "name": "Goblin Tooth"
+                "quantity": 1
             }
         }
     },
     "quest_log": {
-        "Get Bread": "Complete",
-        "Rat Problem": true
+        "Get Bread": "Complete"
     },
-    "flags": {
-        "placesBeen": {
-            "forest": true,
-            "desert": true,
-            "mountains": true,
-            "swamp": false,
-            "volcano": true,
-            "void": false
-        },
-        "mountain_intro_seen": true,
-        "desert_intro_seen": true,
-        "forest_intro_seen": true,
-        "forest_outro_seen": true,
-        "volcano_intro_seen": true,
-        "volcano_outro_seen": true
-    }
+    "flags": {}
 }

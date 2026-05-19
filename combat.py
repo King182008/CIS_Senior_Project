@@ -108,10 +108,9 @@ def display_enemy(enemy, hero):
         actions = 2 if hero.flags.get("extra_turn", False) else 1
 
         # ================= PLAYER TURNS =================
-        for turn in range(actions):
+        turn = 0
 
-            if enemy.health <= 0:
-                break
+        while turn < actions and enemy.health > 0 and hero.health > 0:
 
             print("\n" + "=" * 45)
             print(highlight("             BATTLE"))
@@ -165,6 +164,8 @@ def display_enemy(enemy, hero):
                     hero.mana += hero.weapon.mana_gain
                 else:
                     hero.mana += 5
+
+                turn += 1
 
             # =====================================================
             # SPELLS
@@ -378,6 +379,8 @@ def display_enemy(enemy, hero):
                         )
                     )
 
+                turn += 1
+
             # =====================================================
             # RUN
             # =====================================================
@@ -389,6 +392,7 @@ def display_enemy(enemy, hero):
 
                 else:
                     print(danger("\nFailed to escape!"))
+                    turn += 1
 
             # =====================================================
             # INVALID
